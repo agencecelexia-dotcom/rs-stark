@@ -49,7 +49,7 @@ export default function HomePage() {
         <video
           autoPlay muted loop playsInline
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-          src="/videos/intro.mp4"
+          src="/videos/hf_20260221_001748_34f2ff8a-ba4b-46e9-8248-aa648c6fdc3e.mp4"
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom right, rgba(10,10,10,0.85), rgba(10,10,10,0.45) 50%, rgba(10,10,10,0.9))' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0A0A0A 0%, transparent 45%)' }} />
