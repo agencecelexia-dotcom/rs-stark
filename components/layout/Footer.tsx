@@ -1,103 +1,319 @@
 import Link from 'next/link'
-import { Phone, MapPin, Clock, Instagram, Youtube } from 'lucide-react'
+import { Phone, MapPin, Clock, Instagram, Youtube, Mail } from 'lucide-react'
 
-const STOCK_LINKS = [
-  { href: '/vente',       label: 'Véhicules à vendre'       },
-  { href: '/vendu',       label: 'Véhicules vendus'          },
-  { href: '/preparation', label: 'En préparation'            },
-  { href: '/recherche',   label: 'Recherche personnalisée'   },
+const NAV_LINKS = [
+  { href: '/vente',       label: 'Vehicules a vendre' },
+  { href: '/vendu',       label: 'Vehicules vendus' },
+  { href: '/preparation', label: 'En preparation' },
+  { href: '/recherche',   label: 'Recherche personnalisee' },
 ]
+
 const SERVICE_LINKS = [
-  { href: '/reprise',     label: 'Estimation reprise'        },
-  { href: '/simulateurs', label: 'Simulateur de prix'        },
-  { href: '/simulateurs', label: 'Simulateur assurance'      },
-  { href: '/contact',     label: 'Contact & Horaires'        },
+  { href: '/reprise',     label: 'Estimation reprise' },
+  { href: '/simulateurs', label: 'Simulateur de prix' },
+  { href: '/simulateurs', label: 'Simulateur assurance' },
+  { href: '/contact',     label: 'Contact & Horaires' },
 ]
 
-const S = {
-  label:  { fontSize: 10, letterSpacing: '0.3em', color: '#C9A84C', textTransform: 'uppercase' as const, fontFamily: 'var(--font-code,monospace)', display: 'block', marginBottom: 20 },
-  link:   { display: 'block', fontSize: 13, color: 'rgba(0,0,0,0.4)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' },
-}
+const SOCIAL_LINKS = [
+  { icon: Instagram, href: '#', label: 'Instagram' },
+  { icon: Youtube, href: '#', label: 'YouTube' },
+]
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#EDEEF2', borderTop: '1px solid rgba(0,0,0,0.07)', paddingTop: 64, paddingBottom: 32 }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+    <footer
+      style={{
+        background: '#F5F6F8',
+        borderTop: '1px solid #E2E5EA',
+      }}
+    >
+      {/* ── Main grid ── */}
+      <div
+        className="max-w-[1280px] mx-auto px-6"
+        style={{ paddingTop: 64, paddingBottom: 48 }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10" style={{ marginBottom: 48 }}>
-
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3" style={{ marginBottom: 20 }}>
-              <div style={{ width: 32, height: 32, border: '1px solid #C9A84C', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <span className="font-display" style={{ color: '#C9A84C', fontSize: 11, letterSpacing: '0.3em' }}>RS</span>
+          {/* ── Col 1: Brand ── */}
+          <div className="lg:pr-4">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 no-underline mb-5 group" style={{ textDecoration: 'none' }}>
+              <div
+                className="flex items-center justify-center shrink-0"
+                style={{
+                  width: 36,
+                  height: 36,
+                  background: '#0C1B33',
+                  borderRadius: 8,
+                }}
+              >
+                <span
+                  className="font-display text-white"
+                  style={{ fontSize: 13, letterSpacing: '0.15em', fontWeight: 600 }}
+                >
+                  RS
+                </span>
               </div>
-              <span className="font-display" style={{ fontSize: 18, letterSpacing: '0.22em', color: '#0F0F0F' }}>RS STARK</span>
-            </div>
-            <p style={{ fontSize: 13, color: 'rgba(0,0,0,0.35)', lineHeight: 1.7, marginBottom: 24, maxWidth: 220 }}>
-              Concession automobile premium. Véhicules d&apos;exception sélectionnés avec rigueur.
+              <span
+                className="font-display"
+                style={{
+                  fontSize: 18,
+                  letterSpacing: '0.12em',
+                  color: '#0C1B33',
+                  fontWeight: 600,
+                }}
+              >
+                RS Stark
+              </span>
+            </Link>
+
+            {/* Tagline */}
+            <p
+              style={{
+                fontSize: 14,
+                lineHeight: 1.7,
+                color: '#5A6B80',
+                maxWidth: 260,
+                marginBottom: 24,
+              }}
+            >
+              Concession automobile premium. V&eacute;hicules d&apos;exception
+              s&eacute;lectionn&eacute;s avec rigueur et passion.
             </p>
+
+            {/* Social icons */}
             <div className="flex gap-3">
-              {[Instagram, Youtube].map((Icon, i) => (
-                <a key={i} href="#" style={{ width: 36, height: 36, border: '1px solid rgba(0,0,0,0.1)', background: 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(0,0,0,0.35)', textDecoration: 'none', transition: 'all 0.2s' }}>
-                  <Icon size={13} />
+              {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="flex items-center justify-center transition-all duration-300"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 12,
+                    background: '#FFFFFF',
+                    border: '1px solid #E2E5EA',
+                    color: '#5A6B80',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Icon size={16} />
                 </a>
               ))}
-              <a href="#" style={{ width: 36, height: 36, border: '1px solid rgba(0,0,0,0.1)', background: 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(0,0,0,0.35)', textDecoration: 'none', transition: 'all 0.2s' }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0 0 12.68 6.34 6.34 0 0 0 6.33-6.34V8.69a8.16 8.16 0 0 0 4.77 1.52V6.73a4.85 4.85 0 0 1-1-.04z" />
-                </svg>
-              </a>
             </div>
           </div>
 
-          {/* Stock */}
+          {/* ── Col 2: Navigation ── */}
           <div>
-            <span style={S.label}>Stock</span>
-            {STOCK_LINKS.map((l) => (
-              <Link key={l.href + l.label} href={l.href} style={S.link}>{l.label}</Link>
-            ))}
+            <h4
+              className="font-display"
+              style={{
+                fontSize: 18,
+                fontWeight: 600,
+                color: '#0C1B33',
+                marginBottom: 20,
+                letterSpacing: '0.01em',
+              }}
+            >
+              Navigation
+            </h4>
+            <ul className="flex flex-col gap-3" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {NAV_LINKS.map((link) => (
+                <li key={link.href + link.label}>
+                  <Link
+                    href={link.href}
+                    className="transition-colors duration-200"
+                    style={{
+                      fontSize: 14,
+                      color: '#5A6B80',
+                      textDecoration: 'none',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Services */}
+          {/* ── Col 3: Services ── */}
           <div>
-            <span style={S.label}>Services</span>
-            {SERVICE_LINKS.map((l) => (
-              <Link key={l.href + l.label} href={l.href} style={S.link}>{l.label}</Link>
-            ))}
+            <h4
+              className="font-display"
+              style={{
+                fontSize: 18,
+                fontWeight: 600,
+                color: '#0C1B33',
+                marginBottom: 20,
+                letterSpacing: '0.01em',
+              }}
+            >
+              Services
+            </h4>
+            <ul className="flex flex-col gap-3" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {SERVICE_LINKS.map((link) => (
+                <li key={link.href + link.label}>
+                  <Link
+                    href={link.href}
+                    className="transition-colors duration-200"
+                    style={{
+                      fontSize: 14,
+                      color: '#5A6B80',
+                      textDecoration: 'none',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Contact */}
+          {/* ── Col 4: Contact ── */}
           <div>
-            <span style={S.label}>Contact</span>
+            <h4
+              className="font-display"
+              style={{
+                fontSize: 18,
+                fontWeight: 600,
+                color: '#0C1B33',
+                marginBottom: 20,
+                letterSpacing: '0.01em',
+              }}
+            >
+              Contact
+            </h4>
             <div className="flex flex-col gap-4">
+              {/* Address */}
               <div className="flex items-start gap-3">
-                <MapPin size={13} style={{ color: '#C9A84C', marginTop: 2, flexShrink: 0 }} />
-                <p style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)', lineHeight: 1.6 }}>12 Avenue des Champs-Élysées<br />75008 Paris</p>
+                <div
+                  className="flex items-center justify-center shrink-0"
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: 'rgba(12, 27, 51, 0.05)',
+                    marginTop: 1,
+                  }}
+                >
+                  <MapPin size={14} style={{ color: '#0C1B33' }} />
+                </div>
+                <p style={{ fontSize: 14, color: '#5A6B80', lineHeight: 1.6 }}>
+                  12 Avenue des Champs-&Eacute;lys&eacute;es<br />75008 Paris
+                </p>
               </div>
+
+              {/* Phone */}
               <div className="flex items-center gap-3">
-                <Phone size={13} style={{ color: '#C9A84C', flexShrink: 0 }} />
-                <a href="tel:+33123456789" style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)', textDecoration: 'none', fontFamily: 'var(--font-code,monospace)' }}>
+                <div
+                  className="flex items-center justify-center shrink-0"
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: 'rgba(12, 27, 51, 0.05)',
+                  }}
+                >
+                  <Phone size={14} style={{ color: '#0C1B33' }} />
+                </div>
+                <a
+                  href="tel:+33123456789"
+                  style={{
+                    fontSize: 14,
+                    color: '#5A6B80',
+                    textDecoration: 'none',
+                    fontFamily: 'var(--font-code, monospace)',
+                  }}
+                >
                   01 23 45 67 89
                 </a>
               </div>
+
+              {/* Email */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="flex items-center justify-center shrink-0"
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: 'rgba(12, 27, 51, 0.05)',
+                  }}
+                >
+                  <Mail size={14} style={{ color: '#0C1B33' }} />
+                </div>
+                <a
+                  href="mailto:contact@rsstark.fr"
+                  style={{
+                    fontSize: 14,
+                    color: '#5A6B80',
+                    textDecoration: 'none',
+                  }}
+                >
+                  contact@rsstark.fr
+                </a>
+              </div>
+
+              {/* Hours */}
               <div className="flex items-start gap-3">
-                <Clock size={13} style={{ color: '#C9A84C', marginTop: 2, flexShrink: 0 }} />
-                <p style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)', lineHeight: 1.6 }}>Lun – Sam : 9h – 19h<br />Dim : Sur RDV</p>
+                <div
+                  className="flex items-center justify-center shrink-0"
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: 'rgba(12, 27, 51, 0.05)',
+                    marginTop: 1,
+                  }}
+                >
+                  <Clock size={14} style={{ color: '#0C1B33' }} />
+                </div>
+                <p style={{ fontSize: 14, color: '#5A6B80', lineHeight: 1.6 }}>
+                  Lun &ndash; Sam : 9h &ndash; 19h<br />Dim : Sur RDV
+                </p>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)', paddingTop: 24 }}>
-          <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.2)', fontFamily: 'var(--font-code,monospace)' }}>
-            © 2026 RS Stark — Tous droits réservés
+      {/* ── Bottom bar ── */}
+      <div style={{ borderTop: '1px solid #E2E5EA' }}>
+        <div
+          className="max-w-[1280px] mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+          style={{ paddingTop: 20, paddingBottom: 20 }}
+        >
+          <p
+            style={{
+              fontSize: 13,
+              color: '#5A6B80',
+              fontFamily: 'var(--font-body, sans-serif)',
+            }}
+          >
+            &copy; 2026 RS Stark &mdash; Tous droits r&eacute;serv&eacute;s
           </p>
           <div className="flex gap-6">
-            {['Mentions légales', 'Confidentialité', 'CGV'].map((t) => (
-              <Link key={t} href="#" style={{ fontSize: 11, color: 'rgba(0,0,0,0.2)', textDecoration: 'none', fontFamily: 'var(--font-code,monospace)' }}>
-                {t}
+            {[
+              { label: 'Mentions legales', href: '#' },
+              { label: 'Confidentialite', href: '#' },
+              { label: 'CGV', href: '#' },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="transition-colors duration-200"
+                style={{
+                  fontSize: 13,
+                  color: '#5A6B80',
+                  textDecoration: 'none',
+                }}
+              >
+                {item.label}
               </Link>
             ))}
           </div>

@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Heart, Gauge, Fuel, Zap, ArrowRight } from 'lucide-react'
+import { Heart, Car, Gauge, Fuel, Zap, ArrowRight } from 'lucide-react'
 
 export interface VehicleCardData {
   slug: string
@@ -25,7 +25,7 @@ const BADGE_CLASS: Record<string, string> = {
 const BADGE_LABEL: Record<string, string> = {
   vente:       'Disponible',
   vendu:       'Vendu',
-  preparation: 'En préparation',
+  preparation: 'En preparation',
 }
 
 function fmtPrix(v: number | null) {
@@ -48,92 +48,104 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay: index * 0.07 }}
     >
-      <Link href={`/vehicule/${vehicle.slug}`} style={{ display: 'block', textDecoration: 'none' }}>
-        <div
-          className="group glass-card transition-all duration-500"
-          style={{ overflow: 'hidden' }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 40px rgba(201,168,76,0.15)' }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 24px rgba(0,0,0,0.06)' }}
-        >
-          {/* Photo placeholder */}
-          <div className="img-ph relative" style={{ aspectRatio: '16/10' }}>
+      <Link href={`/vehicule/${vehicle.slug}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+        <div className="group glass-card" style={{ overflow: 'hidden' }}>
+
+          {/* Image placeholder area */}
+          <div className="img-ph" style={{ aspectRatio: '4/3', position: 'relative', borderRadius: '12px 12px 0 0' }}>
+
             {/* Badge statut */}
-            <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
+            <div style={{ position: 'absolute', top: 14, left: 14, zIndex: 2 }}>
               <span className={BADGE_CLASS[vehicle.statut]}>{BADGE_LABEL[vehicle.statut]}</span>
             </div>
 
-            {/* Like */}
+            {/* Like button */}
             <button
-              onClick={(e) => { e.preventDefault(); setLiked((v) => !v) }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLiked((v) => !v) }}
               style={{
-                position: 'absolute', top: 12, right: 12, zIndex: 2,
-                width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(0,0,0,0.08)',
-                backdropFilter: 'blur(8px)', transition: 'all 0.2s',
+                position: 'absolute', top: 14, right: 14, zIndex: 2,
+                width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(12,27,51,0.06)',
+                borderRadius: '50%', backdropFilter: 'blur(8px)',
+                transition: 'all 0.25s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.1)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
             >
               <Heart
-                size={13}
-                style={{ color: liked ? '#ef4444' : 'rgba(0,0,0,0.35)', fill: liked ? '#ef4444' : 'none' }}
+                size={15}
+                style={{
+                  color: liked ? '#ef4444' : '#5A6B80',
+                  fill: liked ? '#ef4444' : 'none',
+                  transition: 'all 0.2s',
+                }}
               />
             </button>
 
-            {/* Hover CTA */}
-            <div
-              className="group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
-              style={{
-                position: 'absolute', bottom: 12, left: 0, right: 0,
-                display: 'flex', justifyContent: 'center',
-                opacity: 0, transform: 'translateY(6px)',
-              }}
-            >
-              <div
-                className="flex items-center gap-2"
-                style={{ background: '#C9A84C', color: '#000', fontSize: 10, letterSpacing: '0.2em', padding: '8px 16px', fontFamily: 'var(--font-code,monospace)' }}
-              >
-                VOIR LA FICHE <ArrowRight size={11} />
-              </div>
+            {/* Centered car icon */}
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Car size={48} style={{ color: 'rgba(12,27,51,0.07)' }} />
             </div>
 
-            {/* Marque label centré */}
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span className="font-display" style={{ fontSize: 32, color: 'rgba(0,0,0,0.05)', letterSpacing: '0.3em', userSelect: 'none' }}>
-                {vehicle.marque.toUpperCase()}
+            {/* Hover CTA overlay */}
+            <div
+              className="group-hover:opacity-100 transition-all duration-300"
+              style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0,
+                padding: '40px 20px 16px',
+                background: 'linear-gradient(to top, rgba(12,27,51,0.6) 0%, transparent 100%)',
+                display: 'flex', justifyContent: 'center',
+                opacity: 0,
+              }}
+            >
+              <span
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: '#FFFFFF', color: '#0C1B33',
+                  fontSize: 12, fontWeight: 500, letterSpacing: '0.05em',
+                  padding: '8px 20px', borderRadius: 50,
+                }}
+              >
+                Voir la fiche <ArrowRight size={13} />
               </span>
             </div>
           </div>
 
-          {/* Infos */}
-          <div style={{ padding: '18px 20px 20px' }}>
-            <div className="flex justify-between items-start" style={{ marginBottom: 14 }}>
-              <div>
-                <p style={{ fontSize: 10, letterSpacing: '0.3em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', marginBottom: 4, fontFamily: 'var(--font-code,monospace)' }}>
-                  {vehicle.marque}
-                </p>
-                <h3 className="font-display" style={{ fontSize: 20, color: '#0F0F0F', lineHeight: 1.1 }}>
-                  {vehicle.modele}{' '}
-                  <span style={{ fontSize: 15, color: 'rgba(0,0,0,0.35)' }}>{vehicle.version}</span>
-                </h3>
-              </div>
-              <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: 16, color: '#C9A84C', fontFamily: 'var(--font-code,monospace)', fontWeight: 500 }}>
-                  {fmtPrix(vehicle.prix)}
-                </p>
-                <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.25)', marginTop: 2, fontFamily: 'var(--font-code,monospace)' }}>
-                  {vehicle.annee}
-                </p>
-              </div>
+          {/* Content area */}
+          <div style={{ padding: '20px 22px 22px' }}>
+            {/* Brand + Model heading */}
+            <div style={{ marginBottom: 6 }}>
+              <p style={{ fontSize: 11, letterSpacing: '0.15em', color: '#5A6B80', textTransform: 'uppercase', marginBottom: 4, fontWeight: 500 }}>
+                {vehicle.marque}
+              </p>
+              <h3 className="font-display" style={{ fontSize: 20, color: '#0C1B33', lineHeight: 1.2 }}>
+                {vehicle.modele}{' '}
+                <span style={{ fontSize: 15, color: '#5A6B80', fontWeight: 400 }}>{vehicle.version}</span>
+              </h3>
             </div>
 
-            {/* Specs */}
-            <div className="flex items-center gap-5" style={{ paddingTop: 14, borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+            {/* Year + km muted */}
+            <p style={{ fontSize: 13, color: '#5A6B80', marginBottom: 14 }}>
+              {vehicle.annee} &middot; {fmtKm(vehicle.km)}
+            </p>
+
+            {/* Price prominent */}
+            <p style={{ fontSize: 20, color: '#0C1B33', fontWeight: 600, marginBottom: 16, fontFamily: 'var(--font-heading, serif)' }}>
+              {fmtPrix(vehicle.prix)}
+            </p>
+
+            {/* Specs row */}
+            <div
+              className="flex items-center gap-4"
+              style={{ paddingTop: 14, borderTop: '1px solid #E2E5EA' }}
+            >
               {[
                 { Icon: Gauge, val: fmtKm(vehicle.km) },
                 { Icon: Fuel,  val: vehicle.carburant  },
                 { Icon: Zap,   val: `${vehicle.puissance} ch` },
               ].map(({ Icon, val }) => (
-                <div key={val} className="flex items-center gap-1.5" style={{ fontSize: 11, color: 'rgba(0,0,0,0.35)', fontFamily: 'var(--font-code,monospace)' }}>
-                  <Icon size={11} style={{ color: '#C9A84C', flexShrink: 0 }} />
+                <div key={val} className="flex items-center gap-1.5" style={{ fontSize: 12, color: '#5A6B80' }}>
+                  <Icon size={13} style={{ color: '#C9A84C', flexShrink: 0 }} />
                   {val}
                 </div>
               ))}

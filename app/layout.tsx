@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
-import { Bebas_Neue, DM_Sans, JetBrains_Mono } from 'next/font/google'
+import { Cormorant_Garamond, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 
-const heading = Bebas_Neue({
-  weight: '400',
+const heading = Cormorant_Garamond({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-heading',
   display: 'swap',
 })
 
-const body = DM_Sans({
+const body = Inter({
   subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',

@@ -1,164 +1,249 @@
 'use client'
-import { useState, useEffect } from 'react'
+
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Phone } from 'lucide-react'
+import { Menu, X, ArrowRight } from 'lucide-react'
 
-const NAV = [
-  { href: '/vente',       label: 'À Vendre'      },
-  { href: '/vendu',       label: 'Vendus'         },
-  { href: '/preparation', label: 'En Préparation' },
-  { href: '/reprise',     label: 'Reprise'        },
-  { href: '/simulateurs', label: 'Simulateurs'    },
-  { href: '/contact',     label: 'Contact'        },
+const NAV_LINKS = [
+  { href: '/vente',       label: 'Vehicules' },
+  { href: '/reprise',     label: 'Reprise' },
+  { href: '/simulateurs', label: 'Simulateurs' },
+  { href: '/contact',     label: 'Contact' },
 ]
+
+const EASE = [0.22, 1, 0.36, 1] as const
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
 
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', fn)
-    return () => window.removeEventListener('scroll', fn)
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 40)
   }, [])
 
-  useEffect(() => { setOpen(false) }, [pathname])
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [mobileOpen])
 
   return (
     <>
+      {/* ── Header ── */}
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? 'glass py-3' : 'py-6'}`}
+        transition={{ duration: 0.7, ease: EASE }}
+        className={`
+          fixed top-0 inset-x-0 z-50
+          transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+          ${scrolled ? 'glass' : 'bg-transparent'}
+        `}
+        style={{ height: 72 }}
       >
-        <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-[1280px] mx-auto px-6 h-full flex items-center justify-between">
 
-          {/* Logo */}
+          {/* ── Logo ── */}
           <Link href="/" className="flex items-center gap-3 no-underline group">
-            <div className="w-8 h-8 border border-[#C9A84C] flex items-center justify-center shrink-0">
-              <span className="font-display text-[#C9A84C]" style={{ fontSize: 11, letterSpacing: '0.3em' }}>RS</span>
+            <div
+              className="flex items-center justify-center shrink-0 transition-all duration-300 group-hover:shadow-lg"
+              style={{
+                width: 36,
+                height: 36,
+                background: '#0C1B33',
+                borderRadius: 8,
+              }}
+            >
+              <span
+                className="font-display text-white"
+                style={{ fontSize: 13, letterSpacing: '0.15em', fontWeight: 600 }}
+              >
+                RS
+              </span>
             </div>
-            <span className="font-display text-xl" style={{ letterSpacing: '0.22em', color: '#0F0F0F' }}>
-              RS STARK
+            <span
+              className="font-display hidden sm:inline-block transition-opacity duration-300"
+              style={{
+                fontSize: 18,
+                letterSpacing: '0.12em',
+                color: '#0C1B33',
+                fontWeight: 600,
+              }}
+            >
+              RS Stark
             </span>
           </Link>
 
-          {/* Desktop links */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {NAV.map((l) => (
-              <Link key={l.href} href={l.href} className="relative no-underline" style={{ textDecoration: 'none' }}>
-                <span
-                  className="transition-colors duration-200"
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: pathname === l.href ? '#C9A84C' : 'rgba(0,0,0,0.45)',
-                  }}
+          {/* ── Desktop Navigation ── */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href || pathname.startsWith(link.href + '/')
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="relative no-underline px-4 py-2 rounded-lg transition-colors duration-200"
+                  style={{ textDecoration: 'none' }}
                 >
-                  {l.label}
-                </span>
-                {pathname === l.href && (
-                  <motion.span
-                    layoutId="nav-bar"
-                    className="absolute inset-x-0 -bottom-1 block h-px bg-[#C9A84C]"
-                  />
-                )}
-              </Link>
-            ))}
+                  <span
+                    className="transition-all duration-200"
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 400,
+                      color: isActive ? '#0C1B33' : '#5A6B80',
+                      letterSpacing: '0.01em',
+                    }}
+                  >
+                    {link.label}
+                  </span>
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full"
+                      style={{ background: '#0C1B33' }}
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              )
+            })}
           </nav>
 
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-5">
-            <a
-              href="tel:+33123456789"
-              className="flex items-center gap-1.5 no-underline transition-colors duration-200"
-              style={{ fontSize: 12, color: 'rgba(0,0,0,0.3)', fontFamily: 'var(--font-code, monospace)' }}
-            >
-              <Phone size={11} />
-              01 23 45 67 89
-            </a>
-            <Link
-              href="/reprise"
-              className="no-underline transition-all duration-300"
-              style={{
-                padding: '9px 20px',
-                border: '1px solid #C9A84C',
-                color: '#C9A84C',
-                fontSize: 11,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Estimer ma reprise
+          {/* ── Desktop CTA ── */}
+          <div className="hidden lg:flex items-center">
+            <Link href="/contact" className="btn-primary" style={{ padding: '10px 24px', fontSize: 13 }}>
+              Nous contacter
+              <ArrowRight size={14} />
             </Link>
           </div>
 
-          {/* Burger */}
+          {/* ── Mobile Burger ── */}
           <button
-            className="lg:hidden bg-transparent border-0"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Menu"
-            style={{ color: '#0F0F0F' }}
+            className="lg:hidden flex items-center justify-center bg-transparent border-0 p-2 rounded-lg transition-colors duration-200"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label={mobileOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            style={{ color: '#0C1B33' }}
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            <AnimatePresence mode="wait" initial={false}>
+              {mobileOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X size={24} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu size={24} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       </motion.header>
 
-      {/* Mobile overlay */}
+      {/* ── Mobile Menu Overlay ── */}
       <AnimatePresence>
-        {open && (
+        {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 flex flex-col"
-            style={{ background: '#F8F9FA', paddingTop: 112, paddingLeft: 32, paddingRight: 32, paddingBottom: 40 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40"
+            style={{ background: 'rgba(12, 27, 51, 0.2)', backdropFilter: 'blur(4px)' }}
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="fixed z-45 left-4 right-4"
+            style={{
+              top: 80,
+              zIndex: 45,
+              background: '#FFFFFF',
+              borderRadius: 16,
+              boxShadow: '0 20px 60px rgba(12, 27, 51, 0.15), 0 4px 16px rgba(12, 27, 51, 0.08)',
+              border: '1px solid #E2E5EA',
+              overflow: 'hidden',
+            }}
           >
-            <nav className="flex flex-col gap-8 flex-1">
-              {NAV.map((l, i) => (
-                <motion.div
-                  key={l.href}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    href={l.href}
-                    className="font-display no-underline transition-colors duration-200"
-                    style={{
-                      fontSize: 36,
-                      letterSpacing: '0.08em',
-                      display: 'block',
-                      color: pathname === l.href ? '#C9A84C' : 'rgba(0,0,0,0.6)',
-                    }}
+            <nav className="flex flex-col py-2">
+              {NAV_LINKS.map((link, i) => {
+                const isActive = pathname === link.href || pathname.startsWith(link.href + '/')
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.3, ease: EASE }}
                   >
-                    {l.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      className="flex items-center no-underline px-6 py-4 transition-colors duration-200"
+                      style={{
+                        fontSize: 16,
+                        fontWeight: isActive ? 500 : 400,
+                        color: isActive ? '#0C1B33' : '#5A6B80',
+                        textDecoration: 'none',
+                        borderLeft: isActive ? '3px solid #0C1B33' : '3px solid transparent',
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                )
+              })}
             </nav>
-            <div className="flex flex-col gap-4" style={{ borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: 32 }}>
-              <a
-                href="tel:+33123456789"
-                className="flex items-center gap-3 no-underline"
-                style={{ fontSize: 14, color: 'rgba(0,0,0,0.35)', fontFamily: 'var(--font-code, monospace)' }}
-              >
-                <Phone size={14} />
-                01 23 45 67 89
-              </a>
+
+            {/* Mobile CTA */}
+            <div style={{ padding: '8px 20px 20px', borderTop: '1px solid #E2E5EA' }}>
               <Link
-                href="/reprise"
-                className="font-display no-underline text-center"
-                style={{ display: 'block', padding: '16px', background: '#C9A84C', color: '#000', fontSize: 20, letterSpacing: '0.2em' }}
+                href="/contact"
+                className="btn-primary no-underline"
+                style={{
+                  width: '100%',
+                  padding: '14px 24px',
+                  fontSize: 14,
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                ESTIMER MA REPRISE
+                Nous contacter
+                <ArrowRight size={16} />
               </Link>
             </div>
           </motion.div>

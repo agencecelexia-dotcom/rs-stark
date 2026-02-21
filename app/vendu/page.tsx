@@ -1,21 +1,21 @@
 import { byStatus } from '@/lib/data'
 import VehicleGrid from '@/components/vehicle/VehicleGrid'
 
-export const metadata = { title: 'Véhicules vendus — RS Stark' }
+export const metadata = { title: 'Vehicules vendus — RS Stark' }
 
 export default function VenduPage() {
   return (
-    <div className="page-section" style={{ minHeight: '100vh', paddingTop: 120, paddingBottom: 96 }}>
+    <div className="page-section" style={{ minHeight: '100vh', paddingTop: 120, paddingBottom: 96, background: 'var(--color-bg)' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
         <div className="page-section-header" style={{ marginBottom: 64 }}>
-          <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 12 }}>
-            Preuve sociale
+          <p className="section-tag">
+            Deja vendus
           </p>
-          <h1 className="font-display" style={{ fontSize: 'clamp(52px,8vw,96px)', color: '#0F0F0F', lineHeight: 0.95, marginBottom: 20 }}>
-            VENDUS
+          <h1 className="font-display" style={{ fontSize: 'clamp(48px, 7vw, 80px)', color: 'var(--color-navy)', lineHeight: 0.95, marginBottom: 20 }}>
+            Vendus
           </h1>
-          <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', maxWidth: 480, lineHeight: 1.7 }}>
-            Ces véhicules d&apos;exception ont trouvé leur propriétaire.
+          <p style={{ fontSize: 16, color: 'var(--color-text-muted)', maxWidth: 520, lineHeight: 1.7 }}>
+            Ces vehicules d&apos;exception ont trouve leur proprietaire.
           </p>
         </div>
         <VehicleGrid vehicles={byStatus('vendu')} />
