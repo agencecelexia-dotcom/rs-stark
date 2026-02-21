@@ -1,109 +1,142 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Heart, Gauge, Fuel, Zap, ArrowRight } from 'lucide-react'
-import { Vehicle, formatPrice, formatKm } from '@/lib/data'
-import { cn } from '@/lib/utils'
 
-interface Props {
-  vehicle: Vehicle
-  index?: number
+export interface VehicleCardData {
+  slug: string
+  statut: 'vente' | 'vendu' | 'preparation'
+  marque: string
+  modele: string
+  version: string
+  annee: number
+  km: number
+  prix: number | null
+  carburant: string
+  puissance: number
 }
 
-const statusLabel = {
-  vente: 'DISPONIBLE',
-  vendu: 'VENDU',
-  preparation: 'EN PRÉPARATION',
+const BADGE_CLASS: Record<string, string> = {
+  vente:       'badge-vente',
+  vendu:       'badge-vendu',
+  preparation: 'badge-preparation',
 }
+const BADGE_LABEL: Record<string, string> = {
+  vente:       'Disponible',
+  vendu:       'Vendu',
+  preparation: 'En préparation',
+}
+
+function fmtPrix(v: number | null) {
+  if (!v) return 'Sur demande'
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v)
+}
+function fmtKm(v: number) {
+  return new Intl.NumberFormat('fr-FR').format(v) + ' km'
+}
+
+interface Props { vehicle: VehicleCardData; index?: number }
 
 export default function VehicleCard({ vehicle, index = 0 }: Props) {
   const [liked, setLiked] = useState(false)
-  const [imgIndex, setImgIndex] = useState(0)
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
+      transition={{ duration: 0.45, delay: index * 0.07 }}
     >
-      <Link href={`/vehicule/${vehicle.slug}`} className="group block">
-        <div className="bg-[#111111] border border-[#2A2A2A] hover:border-[#C9A84C]/40 transition-all duration-500 overflow-hidden">
-          {/* Image */}
-          <div
-            className="relative aspect-[16/10] overflow-hidden"
-            onMouseEnter={() => vehicle.photos[1] && setImgIndex(1)}
-            onMouseLeave={() => setImgIndex(0)}
-          >
-            <Image
-              src={vehicle.photos[imgIndex] || vehicle.photos[0]}
-              alt={`${vehicle.marque} ${vehicle.modele}`}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-            {/* Badge */}
-            <div className="absolute top-3 left-3">
-              <span className={cn(
-                'text-[10px] font-mono tracking-[0.2em] px-2 py-1 rounded-sm',
-                `badge-${vehicle.statut}`
-              )}>
-                {statusLabel[vehicle.statut]}
-              </span>
+      <Link href={`/vehicule/${vehicle.slug}`} style={{ display: 'block', textDecoration: 'none' }}>
+        <div
+          className="group transition-all duration-500"
+          style={{ background: '#111', border: '1px solid #2A2A2A', overflow: 'hidden' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(201,168,76,0.35)' }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = '#2A2A2A' }}
+        >
+          {/* Photo placeholder */}
+          <div className="img-ph relative" style={{ aspectRatio: '16/10' }}>
+            {/* Badge statut */}
+            <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
+              <span className={BADGE_CLASS[vehicle.statut]}>{BADGE_LABEL[vehicle.statut]}</span>
             </div>
 
-            {/* Favorite */}
+            {/* Like */}
             <button
-              onClick={(e) => { e.preventDefault(); setLiked(!liked) }}
-              className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-black/40 backdrop-blur-sm border border-white/10 hover:border-[#C9A84C] transition-all"
+              onClick={(e) => { e.preventDefault(); setLiked((v) => !v) }}
+              style={{
+                position: 'absolute', top: 12, right: 12, zIndex: 2,
+                width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.08)',
+                transition: 'border-color 0.2s',
+              }}
             >
               <Heart
-                size={14}
-                className={cn('transition-colors', liked ? 'fill-red-500 text-red-500' : 'text-white/60')}
+                size={13}
+                style={{ color: liked ? '#ef4444' : 'rgba(255,255,255,0.4)', fill: liked ? '#ef4444' : 'none' }}
               />
             </button>
 
-            {/* CTA on hover */}
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-              <div className="flex items-center gap-2 bg-[#C9A84C] text-black text-xs font-mono tracking-widest px-4 py-2">
-                VOIR LA FICHE <ArrowRight size={12} />
+            {/* Hover CTA */}
+            <div
+              className="group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
+              style={{
+                position: 'absolute', bottom: 12, left: 0, right: 0,
+                display: 'flex', justifyContent: 'center',
+                opacity: 0, transform: 'translateY(6px)',
+              }}
+            >
+              <div
+                className="flex items-center gap-2"
+                style={{ background: '#C9A84C', color: '#000', fontSize: 10, letterSpacing: '0.2em', padding: '8px 16px', fontFamily: 'var(--font-code,monospace)' }}
+              >
+                VOIR LA FICHE <ArrowRight size={11} />
               </div>
+            </div>
+
+            {/* Marque label centré */}
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span className="font-display" style={{ fontSize: 32, color: 'rgba(255,255,255,0.06)', letterSpacing: '0.3em', userSelect: 'none' }}>
+                {vehicle.marque.toUpperCase()}
+              </span>
             </div>
           </div>
 
-          {/* Info */}
-          <div className="p-5">
-            <div className="flex justify-between items-start mb-3">
+          {/* Infos */}
+          <div style={{ padding: '18px 20px 20px' }}>
+            <div className="flex justify-between items-start" style={{ marginBottom: 14 }}>
               <div>
-                <p className="text-[10px] tracking-[0.3em] text-white/40 uppercase mb-1">{vehicle.marque}</p>
-                <h3 className="font-display text-xl tracking-wide text-white">{vehicle.modele} <span className="text-white/50 text-base">{vehicle.version}</span></h3>
+                <p style={{ fontSize: 10, letterSpacing: '0.3em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 4, fontFamily: 'var(--font-code,monospace)' }}>
+                  {vehicle.marque}
+                </p>
+                <h3 className="font-display" style={{ fontSize: 20, color: 'white', lineHeight: 1.1 }}>
+                  {vehicle.modele}{' '}
+                  <span style={{ fontSize: 15, color: 'rgba(255,255,255,0.4)' }}>{vehicle.version}</span>
+                </h3>
               </div>
-              <div className="text-right">
-                <p className="font-mono text-[#C9A84C] font-medium text-lg">{formatPrice(vehicle.prix)}</p>
-                <p className="text-[10px] text-white/30 mt-0.5">{vehicle.annee}</p>
+              <div style={{ textAlign: 'right' }}>
+                <p style={{ fontSize: 16, color: '#C9A84C', fontFamily: 'var(--font-code,monospace)', fontWeight: 500 }}>
+                  {fmtPrix(vehicle.prix)}
+                </p>
+                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 2, fontFamily: 'var(--font-code,monospace)' }}>
+                  {vehicle.annee}
+                </p>
               </div>
             </div>
 
             {/* Specs */}
-            <div className="flex items-center gap-4 pt-4 border-t border-[#2A2A2A]">
-              <div className="flex items-center gap-1.5 text-white/40 text-xs">
-                <Gauge size={11} className="text-[#C9A84C]" />
-                <span className="font-mono">{formatKm(vehicle.km)}</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-white/40 text-xs">
-                <Fuel size={11} className="text-[#C9A84C]" />
-                {vehicle.carburant}
-              </div>
-              <div className="flex items-center gap-1.5 text-white/40 text-xs">
-                <Zap size={11} className="text-[#C9A84C]" />
-                <span className="font-mono">{vehicle.puissance} ch</span>
-              </div>
+            <div className="flex items-center gap-5" style={{ paddingTop: 14, borderTop: '1px solid #222' }}>
+              {[
+                { Icon: Gauge, val: fmtKm(vehicle.km) },
+                { Icon: Fuel,  val: vehicle.carburant  },
+                { Icon: Zap,   val: `${vehicle.puissance} ch` },
+              ].map(({ Icon, val }) => (
+                <div key={val} className="flex items-center gap-1.5" style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-code,monospace)' }}>
+                  <Icon size={11} style={{ color: '#C9A84C', flexShrink: 0 }} />
+                  {val}
+                </div>
+              ))}
             </div>
           </div>
         </div>

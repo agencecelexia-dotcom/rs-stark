@@ -1,20 +1,27 @@
-import { motion } from 'framer-motion'
-import { getVehiclesByStatus } from '@/lib/data'
+import { byStatus } from '@/lib/data'
 import VehicleGrid from '@/components/vehicle/VehicleGrid'
 
 export const metadata = { title: 'Véhicules à vendre — RS Stark' }
 
 export default function VentePage() {
-  const vehicles = getVehiclesByStatus('vente')
   return (
-    <div className="min-h-screen pt-32 pb-24">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-16">
-          <p className="text-[#C9A84C] font-mono text-xs tracking-[0.4em] uppercase mb-3">Stock disponible</p>
-          <h1 className="font-display text-6xl md:text-8xl text-white mb-4">À VENDRE</h1>
-          <p className="text-white/40 max-w-xl">Chaque véhicule est inspecté sur 150 points et livré avec une garantie de 6 mois.</p>
+    <div style={{ minHeight: '100vh', paddingTop: 120, paddingBottom: 96 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+
+        {/* En-tête */}
+        <div style={{ marginBottom: 64 }}>
+          <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 12 }}>
+            Stock disponible
+          </p>
+          <h1 className="font-display" style={{ fontSize: 'clamp(52px,8vw,96px)', color: 'white', lineHeight: 0.95, marginBottom: 20 }}>
+            À VENDRE
+          </h1>
+          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.35)', maxWidth: 480, lineHeight: 1.7 }}>
+            Chaque véhicule est inspecté sur 150 points et livré avec une garantie de 6 mois.
+          </p>
         </div>
-        <VehicleGrid vehicles={vehicles} />
+
+        <VehicleGrid vehicles={byStatus('vente')} />
       </div>
     </div>
   )

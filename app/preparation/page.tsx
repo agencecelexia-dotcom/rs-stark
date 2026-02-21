@@ -1,35 +1,41 @@
-import { getVehiclesByStatus } from '@/lib/data'
+import { byStatus } from '@/lib/data'
 import VehicleGrid from '@/components/vehicle/VehicleGrid'
 
 export const metadata = { title: 'En préparation — RS Stark' }
 
 export default function PreparationPage() {
-  const vehicles = getVehiclesByStatus('preparation')
   return (
-    <div className="min-h-screen pt-32 pb-24">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-16">
-          <p className="text-[#C9A84C] font-mono text-xs tracking-[0.4em] uppercase mb-3">Bientôt disponibles</p>
-          <h1 className="font-display text-6xl md:text-8xl text-white mb-4">EN PRÉPARATION</h1>
-          <p className="text-white/40 max-w-xl">Ces véhicules sont en cours de contrôle et de préparation. Contactez-nous pour être prioritaire sur un véhicule.</p>
+    <div style={{ minHeight: '100vh', paddingTop: 120, paddingBottom: 96 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+
+        <div style={{ marginBottom: 64 }}>
+          <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 12 }}>
+            Bientôt disponibles
+          </p>
+          <h1 className="font-display" style={{ fontSize: 'clamp(52px,8vw,96px)', color: 'white', lineHeight: 0.95, marginBottom: 20 }}>
+            EN PRÉPARATION
+          </h1>
+          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.35)', maxWidth: 480, lineHeight: 1.7 }}>
+            Ces véhicules sont en cours de contrôle et préparation. Contactez-nous pour être prioritaire.
+          </p>
         </div>
 
-        {/* Progress indicator */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        {/* Étapes */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5" style={{ marginBottom: 64 }}>
           {[
             { step: '01', label: 'Contrôle technique', desc: 'Inspection complète 150 points réalisée ou en cours.' },
             { step: '02', label: 'Préparation esthétique', desc: 'Nettoyage complet, polish, réparations carrosserie.' },
             { step: '03', label: 'Mise en vente', desc: 'Photoshooting, fiche technique complète, mise en ligne.' },
           ].map((s) => (
-            <div key={s.step} className="border border-[#2A2A2A] p-6">
-              <p className="font-mono text-4xl text-[#C9A84C]/30 mb-3">{s.step}</p>
-              <h3 className="font-display text-xl text-white mb-2">{s.label}</h3>
-              <p className="text-sm text-white/30">{s.desc}</p>
+            <div key={s.step} style={{ border: '1px solid #2A2A2A', padding: 24 }}>
+              <p className="font-display" style={{ fontSize: 40, color: 'rgba(201,168,76,0.2)', marginBottom: 12 }}>{s.step}</p>
+              <h3 className="font-display" style={{ fontSize: 18, color: 'white', marginBottom: 8 }}>{s.label}</h3>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', lineHeight: 1.6 }}>{s.desc}</p>
             </div>
           ))}
         </div>
 
-        <VehicleGrid vehicles={vehicles} />
+        <VehicleGrid vehicles={byStatus('preparation')} />
       </div>
     </div>
   )
