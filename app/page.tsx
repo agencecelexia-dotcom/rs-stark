@@ -56,75 +56,51 @@ export default function HomePage() {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           src="/videos/hf_20260221_001748_34f2ff8a-ba4b-46e9-8248-aa648c6fdc3e.mp4"
         />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom right, rgba(10,10,10,0.85), rgba(10,10,10,0.45) 50%, rgba(10,10,10,0.9))' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0A0A0A 0%, transparent 45%)' }} />
-
-        {/* Logo full-screen au terme de la vidéo */}
+        {/* Fond noir + texte après la vidéo */}
         <AnimatePresence>
           {videoEnded && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1.2, ease: 'easeInOut' }}
-              style={{
-                position: 'absolute', inset: 0, zIndex: 20,
-                background: '#0A0A0A',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/image0%20(2).jpeg"
-                alt="RS Stark"
-                style={{
-                  width: '60%', maxWidth: 640,
-                  objectFit: 'contain',
-                  filter: 'invert(1)',
-                }}
-              />
-            </motion.div>
+              transition={{ duration: 0.8 }}
+              style={{ position: 'absolute', inset: 0, zIndex: 15, background: '#0A0A0A' }}
+            />
           )}
         </AnimatePresence>
 
-        <div style={{ position: 'relative', zIndex: 25, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 64px', maxWidth: 1344, margin: '0 auto' }}>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
-            style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}
-          >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: videoEnded ? 1 : 0 }}
+          transition={{ duration: 0.9, delay: videoEnded ? 0.5 : 0 }}
+          style={{ position: 'relative', zIndex: 25, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 64px', maxWidth: 1344, margin: '0 auto' }}
+        >
+          <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}>
             Concession Premium — Paris
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          </p>
+          <h1
             className="font-display"
             style={{ fontSize: 'clamp(56px,9vw,130px)', lineHeight: 0.9, color: 'white', marginBottom: 24 }}
           >
             L&apos;EXCELLENCE<br />
             <span className="text-gold">AUTOMOBILE</span><br />
             À PORTÉE DE MAIN
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.3 }}
-            style={{ fontSize: 16, color: 'rgba(255,255,255,0.45)', maxWidth: 400, marginBottom: 40, lineHeight: 1.7 }}
-          >
+          </h1>
+          <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.45)', maxWidth: 400, marginBottom: 40, lineHeight: 1.7 }}>
             Chaque véhicule est sélectionné, inspecté et préparé avec une rigueur absolue.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }}
-            style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}
-          >
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
             <Link href="/vente" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: '#C9A84C', color: '#000', padding: '16px 32px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 16, letterSpacing: '0.2em', textDecoration: 'none' }}>
               DÉCOUVRIR NOS VÉHICULES <ArrowRight size={16} />
             </Link>
             <Link href="/reprise" style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', color: 'white', padding: '16px 32px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 16, letterSpacing: '0.2em', textDecoration: 'none' }}>
               ESTIMER MA REPRISE
             </Link>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
 
         {/* Scroll */}
         <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
+          initial={{ opacity: 0 }} animate={{ opacity: videoEnded ? 1 : 0 }} transition={{ delay: videoEnded ? 1 : 0, duration: 0.8 }}
           style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 25 }}
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
@@ -134,7 +110,10 @@ export default function HomePage() {
         </motion.div>
 
         {/* Stats */}
-        <div style={{ position: 'absolute', bottom: 40, right: 64, zIndex: 25, display: 'flex', flexDirection: 'column', gap: 16, textAlign: 'right' }}>
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: videoEnded ? 1 : 0 }} transition={{ delay: videoEnded ? 0.6 : 0, duration: 0.8 }}
+          style={{ position: 'absolute', bottom: 40, right: 64, zIndex: 25, display: 'flex', flexDirection: 'column', gap: 16, textAlign: 'right' }}
+        >
           {[
             { label: 'Véhicules en stock',  value: venteCount,       suffix: ''   },
             { label: 'Véhicules vendus',    value: venduCount + 100, suffix: '+'  },
@@ -145,7 +124,7 @@ export default function HomePage() {
               <p style={{ fontSize: 10, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)' }}>{s.label}</p>
             </div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* ── CATÉGORIES ── */}
