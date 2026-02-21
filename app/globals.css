@@ -101,8 +101,10 @@
   }
 }
 
-/* ─── Mobile hero & video optimization ────────────────────── */
+/* ─── Mobile optimization (all pages) ─────────────────────── */
 @media (max-width: 767px) {
+
+  /* ── Hero / Video intro ── */
   .hero-section {
     height: 100svh !important;
   }
@@ -151,5 +153,22 @@
     justify-content: center !important;
     padding: 16px 24px !important;
     font-size: 15px !important;
+  }
+
+  /* ── Pages with inline styles (vente, vendu, preparation, vehicule) ── */
+  .page-section {
+    padding-top: 80px !important;
+    padding-bottom: 48px !important;
+  }
+  .page-section-header {
+    margin-bottom: 32px !important;
+  }
+
+  /* ── Vehicle detail page ── */
+  .vehicle-brand-text {
+    font-size: 28px !important;
+  }
+  .vehicle-modal {
+    padding: 20px !important;
   }
 }

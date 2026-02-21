@@ -41,7 +41,7 @@ export default function VehiclePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', paddingTop: 96, paddingBottom: 96 }}>
+    <div className="page-section" style={{ minHeight: '100vh', paddingTop: 96, paddingBottom: 96 }}>
 
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 24px' }}>
@@ -60,7 +60,7 @@ export default function VehiclePage() {
           {/* LEFT — Placeholder visuel */}
           <div>
             <div className="img-ph" style={{ aspectRatio: '16/10', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-              <span className="font-display" style={{ fontSize: 52, color: 'rgba(255,255,255,0.04)', letterSpacing: '0.05em', userSelect: 'none' }}>
+              <span className="font-display vehicle-brand-text" style={{ fontSize: 52, color: 'rgba(255,255,255,0.04)', letterSpacing: '0.05em', userSelect: 'none' }}>
                 {vehicle.marque.toUpperCase()}
               </span>
               <div style={{ position: 'absolute', top: 16, left: 16 }}>
@@ -173,6 +173,7 @@ export default function VehiclePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
+              className="vehicle-modal"
               style={{ background: '#111', border: '1px solid #2A2A2A', padding: 32, maxWidth: 480, width: '100%' }}
             >
               {formSent ? (
