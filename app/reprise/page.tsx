@@ -29,7 +29,7 @@ export default function ReprisePage() {
       <div className="max-w-2xl mx-auto px-6">
         <div className="mb-12">
           <p className="text-[#C9A84C] font-mono text-xs tracking-[0.4em] uppercase mb-3">Estimation gratuite</p>
-          <h1 className="font-display text-6xl text-white mb-4">REPRISE</h1>
+          <h1 className="font-display text-4xl sm:text-6xl text-white mb-4">REPRISE</h1>
           <p className="text-white/40">Renseignez votre véhicule et recevez une estimation dans les 2 heures. Offre ferme, sans engagement.</p>
         </div>
 
@@ -78,7 +78,7 @@ export default function ReprisePage() {
                   </div>
                   <div>
                     <p className="text-xs font-mono tracking-widest text-white/30 uppercase mb-3">État général</p>
-                    <div className="grid grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {['Excellent', 'Bon', 'Correct', 'Mauvais'].map((e) => (
                         <button key={e} onClick={() => update('etat', e)} className={`py-3 border text-sm font-mono transition-all ${form.etat === e ? 'border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10' : 'border-[#2A2A2A] text-white/40 hover:border-white/20'}`}>{e}</button>
                       ))}
@@ -149,7 +149,7 @@ export default function ReprisePage() {
               <p className="text-[#C9A84C] font-mono text-xs tracking-[0.4em] uppercase mb-4">Estimation indicative</p>
               {estimationMin && estimationMax && (
                 <div className="mb-8">
-                  <p className="font-display text-6xl text-white mb-2">
+                  <p className="font-display text-3xl sm:text-6xl text-white mb-2">
                     {estimationMin.toLocaleString('fr-FR')} € — {estimationMax.toLocaleString('fr-FR')} €
                   </p>
                   <p className="text-white/30 text-sm">Fourchette basée sur les informations fournies</p>

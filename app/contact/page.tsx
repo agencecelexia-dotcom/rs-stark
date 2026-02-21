@@ -15,10 +15,10 @@ export default function ContactPage() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-16">
           <p className="text-[#C9A84C] font-mono text-xs tracking-[0.4em] uppercase mb-3">Nous joindre</p>
-          <h1 className="font-display text-6xl md:text-8xl text-white">CONTACT</h1>
+          <h1 className="font-display text-4xl sm:text-6xl md:text-8xl text-white">CONTACT</h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           {/* LEFT — Info */}
           <div className="space-y-10">
             {/* Quick CTA */}
@@ -49,9 +49,9 @@ export default function ContactPage() {
                 <div>
                   <p className="font-display text-lg text-white mb-2">HORAIRES</p>
                   <div className="space-y-1 text-sm text-white/40 font-mono">
-                    <div className="flex justify-between gap-8"><span>Lundi – Vendredi</span><span>9h00 – 19h00</span></div>
-                    <div className="flex justify-between gap-8"><span>Samedi</span><span>10h00 – 18h00</span></div>
-                    <div className="flex justify-between gap-8"><span>Dimanche</span><span>Sur rendez-vous</span></div>
+                    <div className="flex justify-between gap-4 sm:gap-8"><span>Lundi – Vendredi</span><span>9h00 – 19h00</span></div>
+                    <div className="flex justify-between gap-4 sm:gap-8"><span>Samedi</span><span>10h00 – 18h00</span></div>
+                    <div className="flex justify-between gap-4 sm:gap-8"><span>Dimanche</span><span>Sur rendez-vous</span></div>
                   </div>
                 </div>
               </div>

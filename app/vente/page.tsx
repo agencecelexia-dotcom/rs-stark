@@ -5,11 +5,11 @@ export const metadata = { title: 'Véhicules à vendre — RS Stark' }
 
 export default function VentePage() {
   return (
-    <div style={{ minHeight: '100vh', paddingTop: 120, paddingBottom: 96 }}>
+    <div className="page-section" style={{ minHeight: '100vh', paddingTop: 120, paddingBottom: 96 }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
 
         {/* En-tête */}
-        <div style={{ marginBottom: 64 }}>
+        <div className="page-section-header" style={{ marginBottom: 64 }}>
           <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 12 }}>
             Stock disponible
           </p>

@@ -54,7 +54,7 @@ function SimulateurPrix() {
           </div>
           <div>
             <label className="text-[10px] font-mono tracking-widest text-white/30 uppercase block mb-2">État général</label>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {['Excellent', 'Bon', 'Correct', 'Mauvais'].map((e) => (
                 <button key={e} onClick={() => setEtat(e)} className={`py-2 border text-xs font-mono transition-all ${etat === e ? 'border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10' : 'border-[#2A2A2A] text-white/40 hover:border-white/20'}`}>{e}</button>
               ))}
@@ -219,7 +219,7 @@ export default function SimulateursPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row gap-3 mb-12">
           <button onClick={() => setTab('prix')} className={`flex items-center gap-2 px-6 py-3 font-display tracking-widest text-sm transition-all ${tab === 'prix' ? 'bg-[#C9A84C] text-black' : 'border border-[#2A2A2A] text-white/40 hover:border-[#C9A84C] hover:text-white'}`}>
             <TrendingDown size={14} /> PRIX MARCHÉ
           </button>
