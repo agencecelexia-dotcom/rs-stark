@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { ArrowDown, ArrowRight, X } from 'lucide-react'
 import { getFeatured, byStatus } from '@/lib/data'
 import VehicleCard from '@/components/vehicle/VehicleCard'
@@ -41,18 +41,50 @@ const comparisonData = [
 ]
 
 export default function HomePage() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [videoEnded, setVideoEnded] = useState(false)
+
   return (
     <div>
 
       {/* ── HERO ── */}
       <section style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
         <video
-          autoPlay muted loop playsInline
+          ref={videoRef}
+          autoPlay muted playsInline
+          onEnded={() => setVideoEnded(true)}
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           src="/videos/hf_20260221_001748_34f2ff8a-ba4b-46e9-8248-aa648c6fdc3e.mp4"
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom right, rgba(10,10,10,0.85), rgba(10,10,10,0.45) 50%, rgba(10,10,10,0.9))' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0A0A0A 0%, transparent 45%)' }} />
+
+        {/* Logo full-screen au terme de la vidéo */}
+        <AnimatePresence>
+          {videoEnded && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2, ease: 'easeInOut' }}
+              style={{
+                position: 'absolute', inset: 0, zIndex: 20,
+                background: '#0A0A0A',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/image0%20(2).jpeg"
+                alt="RS Stark"
+                style={{
+                  width: '60%', maxWidth: 640,
+                  objectFit: 'contain',
+                  filter: 'invert(1)',
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 64px', maxWidth: 1344, margin: '0 auto' }}>
           <motion.p
