@@ -17,9 +17,10 @@
     font-family: var(--font-body, system-ui, sans-serif);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    cursor: none;
+    cursor: default;
   }
-  a, button, [role="button"], input, select, textarea, label { cursor: none; }
+  a, button, [role='button'], input[type='button'], input[type='submit'], select, label { cursor: pointer; }
+  input, textarea { cursor: text; }
   ::selection { background: #C9A84C; color: #000; }
   ::-webkit-scrollbar       { width: 3px; }
   ::-webkit-scrollbar-track { background: #0A0A0A; }

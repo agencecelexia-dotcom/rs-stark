@@ -39,13 +39,8 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 no-underline group">
-            <div style={{ width: 40, height: 40, background: 'white', padding: 4, flexShrink: 0 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/image0%20(2).jpeg"
-                alt="RS Stark"
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
+            <div className="w-8 h-8 border border-[#C9A84C] flex items-center justify-center shrink-0">
+              <span className="font-display text-[#C9A84C]" style={{ fontSize: 11, letterSpacing: '0.3em' }}>RS</span>
             </div>
             <span className="font-display text-white text-xl" style={{ letterSpacing: '0.22em' }}>
               RS STARK
