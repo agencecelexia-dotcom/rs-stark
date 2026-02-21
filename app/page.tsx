@@ -74,6 +74,14 @@ export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [videoReady, setVideoReady] = useState(false)
   const [videoError, setVideoError] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check, { passive: true })
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   return (
     <div>
@@ -82,8 +90,8 @@ export default function HomePage() {
           HERO SECTION
       ════════════════════════════════════════════════════════════ */}
       <section className="hero-section" style={{ position: 'relative', height: '100vh', overflow: 'hidden', background: '#0C1B33' }}>
-        {/* Video — ambient background, not blocking */}
-        {!videoError && (
+        {/* Video — desktop only, ambient background */}
+        {!isMobile && !videoError && (
           <video
             ref={videoRef}
             autoPlay muted playsInline loop
@@ -101,7 +109,9 @@ export default function HomePage() {
         {/* Dark gradient overlay — ensures text readability */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 5,
-          background: 'linear-gradient(to right, rgba(12,27,51,0.85) 0%, rgba(12,27,51,0.5) 60%, rgba(12,27,51,0.3) 100%)',
+          background: isMobile
+            ? 'linear-gradient(to top, rgba(12,27,51,0.95) 0%, rgba(12,27,51,0.6) 50%, rgba(12,27,51,0.4) 100%)'
+            : 'linear-gradient(to right, rgba(12,27,51,0.85) 0%, rgba(12,27,51,0.5) 60%, rgba(12,27,51,0.3) 100%)',
         }} />
 
         {/* Hero content (text + CTAs) — always visible */}
