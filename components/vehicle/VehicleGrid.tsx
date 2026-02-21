@@ -10,14 +10,21 @@ const MARQUES    = ['Toutes', 'Porsche', 'Ferrari', 'Lamborghini', 'McLaren', 'B
 const CARBURANTS = ['Tous', 'Essence', 'Diesel', 'Hybride', 'Électrique']
 
 const INPUT = {
-  width: '100%', background: '#111', border: '1px solid #2A2A2A',
-  color: '#F0F0F0', padding: '12px 16px', fontSize: 13, outline: 'none',
-  fontFamily: 'var(--font-code,monospace)', transition: 'border-color 0.2s',
+  width: '100%',
+  background: 'rgba(255,255,255,0.7)',
+  border: '1px solid rgba(0,0,0,0.09)',
+  color: '#0F0F0F',
+  padding: '12px 16px',
+  fontSize: 13,
+  outline: 'none',
+  fontFamily: 'var(--font-code,monospace)',
+  transition: 'border-color 0.2s',
+  backdropFilter: 'blur(12px)',
 }
-const SELECT = { ...INPUT, color: 'rgba(255,255,255,0.5)' }
-const CHIP_BASE = { fontSize: 11, padding: '4px 10px', border: '1px solid #2A2A2A', fontFamily: 'var(--font-code,monospace)', transition: 'all 0.15s', cursor: 'none' }
-const CHIP_ON  = { ...CHIP_BASE, background: '#C9A84C', color: '#000',           borderColor: '#C9A84C' }
-const CHIP_OFF = { ...CHIP_BASE, background: 'transparent', color: 'rgba(255,255,255,0.35)' }
+const SELECT = { ...INPUT, color: 'rgba(0,0,0,0.45)' }
+const CHIP_BASE = { fontSize: 11, padding: '4px 10px', border: '1px solid rgba(0,0,0,0.09)', fontFamily: 'var(--font-code,monospace)', transition: 'all 0.15s' }
+const CHIP_ON  = { ...CHIP_BASE, background: '#C9A84C', color: '#000', borderColor: '#C9A84C' }
+const CHIP_OFF = { ...CHIP_BASE, background: 'rgba(255,255,255,0.5)', color: 'rgba(0,0,0,0.4)' }
 
 export default function VehicleGrid({ vehicles }: Props) {
   const [search,  setSearch]      = useState('')
@@ -53,7 +60,7 @@ export default function VehicleGrid({ vehicles }: Props) {
       {/* Barre de recherche */}
       <div className="flex flex-col md:flex-row gap-3" style={{ marginBottom: 12 }}>
         <div style={{ position: 'relative', flex: 1 }}>
-          <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.2)' }} />
+          <Search size={14} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'rgba(0,0,0,0.25)' }} />
           <input
             type="text"
             value={search}
@@ -61,7 +68,7 @@ export default function VehicleGrid({ vehicles }: Props) {
             placeholder="Marque, modèle..."
             style={{ ...INPUT, paddingLeft: 40 }}
             onFocus={(e) => { e.currentTarget.style.borderColor = '#C9A84C' }}
-            onBlur={(e)  => { e.currentTarget.style.borderColor = '#2A2A2A' }}
+            onBlur={(e)  => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.09)' }}
           />
         </div>
         <select
@@ -69,7 +76,7 @@ export default function VehicleGrid({ vehicles }: Props) {
           onChange={(e) => setSort(e.target.value)}
           style={{ ...SELECT, width: 'auto', minWidth: 160 }}
           onFocus={(e) => { e.currentTarget.style.borderColor = '#C9A84C' }}
-          onBlur={(e)  => { e.currentTarget.style.borderColor = '#2A2A2A' }}
+          onBlur={(e)  => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.09)' }}
         >
           <option value="recent">Plus récents</option>
           <option value="prix-asc">Prix croissant</option>
@@ -79,7 +86,7 @@ export default function VehicleGrid({ vehicles }: Props) {
         <button
           onClick={() => setFilters((v) => !v)}
           className="flex items-center gap-2 transition-all duration-200"
-          style={{ ...CHIP_OFF, padding: '12px 18px', borderColor: filters ? '#C9A84C' : '#2A2A2A', color: filters ? '#C9A84C' : 'rgba(255,255,255,0.4)' }}
+          style={{ ...CHIP_OFF, padding: '12px 18px', borderColor: filters ? '#C9A84C' : 'rgba(0,0,0,0.09)', color: filters ? '#C9A84C' : 'rgba(0,0,0,0.4)' }}
         >
           <SlidersHorizontal size={13} />
           Filtres
@@ -95,11 +102,11 @@ export default function VehicleGrid({ vehicles }: Props) {
             exit={{ opacity: 0, height: 0 }}
             style={{ overflow: 'hidden', marginBottom: 12 }}
           >
-            <div style={{ background: '#111', border: '1px solid #2A2A2A', padding: 24 }}>
+            <div className="glass-card" style={{ padding: 24 }}>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Marque */}
                 <div>
-                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>Marque</p>
+                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>Marque</p>
                   <div className="flex flex-wrap gap-1.5">
                     {MARQUES.map((m) => (
                       <button key={m} onClick={() => setMarque(m)} style={marque === m ? CHIP_ON : CHIP_OFF}>{m}</button>
@@ -108,7 +115,7 @@ export default function VehicleGrid({ vehicles }: Props) {
                 </div>
                 {/* Carburant */}
                 <div>
-                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>Carburant</p>
+                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>Carburant</p>
                   <div className="flex flex-wrap gap-1.5">
                     {CARBURANTS.map((c) => (
                       <button key={c} onClick={() => setCarb(c)} style={carb === c ? CHIP_ON : CHIP_OFF}>{c}</button>
@@ -117,21 +124,21 @@ export default function VehicleGrid({ vehicles }: Props) {
                 </div>
                 {/* Prix */}
                 <div>
-                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>
+                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>
                     Prix max — <span style={{ color: '#C9A84C' }}>{maxPrix >= 1000000 ? '∞' : `${maxPrix.toLocaleString('fr-FR')} €`}</span>
                   </p>
                   <input type="range" min={20000} max={1000000} step={5000} value={maxPrix} onChange={(e) => setMaxPrix(Number(e.target.value))} style={{ width: '100%', accentColor: '#C9A84C' }} />
                 </div>
                 {/* Km */}
                 <div>
-                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>
+                  <p style={{ fontSize: 10, letterSpacing: '0.25em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 10 }}>
                     Km max — <span style={{ color: '#C9A84C' }}>{maxKm >= 200000 ? '∞' : `${maxKm.toLocaleString('fr-FR')} km`}</span>
                   </p>
                   <input type="range" min={0} max={200000} step={5000} value={maxKm} onChange={(e) => setMaxKm(Number(e.target.value))} style={{ width: '100%', accentColor: '#C9A84C' }} />
                 </div>
               </div>
               <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
-                <button onClick={reset} className="flex items-center gap-1.5" style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-code,monospace)', background: 'none', border: 'none' }}>
+                <button onClick={reset} className="flex items-center gap-1.5" style={{ fontSize: 11, color: 'rgba(0,0,0,0.3)', fontFamily: 'var(--font-code,monospace)', background: 'none', border: 'none' }}>
                   <X size={11} /> Réinitialiser
                 </button>
               </div>
@@ -141,15 +148,15 @@ export default function VehicleGrid({ vehicles }: Props) {
       </AnimatePresence>
 
       {/* Compteur résultats */}
-      <p style={{ fontSize: 10, letterSpacing: '0.3em', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}>
+      <p style={{ fontSize: 10, letterSpacing: '0.3em', color: 'rgba(0,0,0,0.25)', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}>
         {results.length} VÉHICULE{results.length !== 1 ? 'S' : ''} TROUVÉ{results.length !== 1 ? 'S' : ''}
       </p>
 
       {/* Grille */}
       {results.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '80px 24px', border: '1px solid #2A2A2A' }}>
-          <p className="font-display" style={{ fontSize: 36, color: 'rgba(255,255,255,0.1)', marginBottom: 12 }}>AUCUN RÉSULTAT</p>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', marginBottom: 20 }}>Modifiez vos critères</p>
+        <div className="glass-card" style={{ textAlign: 'center', padding: '80px 24px' }}>
+          <p className="font-display" style={{ fontSize: 36, color: 'rgba(0,0,0,0.08)', marginBottom: 12 }}>AUCUN RÉSULTAT</p>
+          <p style={{ fontSize: 13, color: 'rgba(0,0,0,0.3)', marginBottom: 20 }}>Modifiez vos critères</p>
           <button onClick={reset} style={{ fontSize: 12, color: '#C9A84C', fontFamily: 'var(--font-code,monospace)', background: 'none', border: 'none' }}>
             Réinitialiser les filtres
           </button>

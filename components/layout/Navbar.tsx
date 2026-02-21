@@ -33,7 +33,7 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? 'glass py-3 border-b border-[#2A2A2A]' : 'py-6'}`}
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? 'glass py-3' : 'py-6'}`}
       >
         <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between">
 
@@ -42,7 +42,7 @@ export default function Navbar() {
             <div className="w-8 h-8 border border-[#C9A84C] flex items-center justify-center shrink-0">
               <span className="font-display text-[#C9A84C]" style={{ fontSize: 11, letterSpacing: '0.3em' }}>RS</span>
             </div>
-            <span className="font-display text-white text-xl" style={{ letterSpacing: '0.22em' }}>
+            <span className="font-display text-xl" style={{ letterSpacing: '0.22em', color: '#0F0F0F' }}>
               RS STARK
             </span>
           </Link>
@@ -57,7 +57,7 @@ export default function Navbar() {
                     fontSize: 11,
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
-                    color: pathname === l.href ? '#C9A84C' : 'rgba(255,255,255,0.5)',
+                    color: pathname === l.href ? '#C9A84C' : 'rgba(0,0,0,0.45)',
                   }}
                 >
                   {l.label}
@@ -77,7 +77,7 @@ export default function Navbar() {
             <a
               href="tel:+33123456789"
               className="flex items-center gap-1.5 no-underline transition-colors duration-200"
-              style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-code, monospace)' }}
+              style={{ fontSize: 12, color: 'rgba(0,0,0,0.3)', fontFamily: 'var(--font-code, monospace)' }}
             >
               <Phone size={11} />
               01 23 45 67 89
@@ -100,9 +100,10 @@ export default function Navbar() {
 
           {/* Burger */}
           <button
-            className="lg:hidden text-white bg-transparent border-0"
+            className="lg:hidden bg-transparent border-0"
             onClick={() => setOpen((v) => !v)}
             aria-label="Menu"
+            style={{ color: '#0F0F0F' }}
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -118,7 +119,7 @@ export default function Navbar() {
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-40 flex flex-col"
-            style={{ background: '#0A0A0A', paddingTop: 112, paddingLeft: 32, paddingRight: 32, paddingBottom: 40 }}
+            style={{ background: '#F8F9FA', paddingTop: 112, paddingLeft: 32, paddingRight: 32, paddingBottom: 40 }}
           >
             <nav className="flex flex-col gap-8 flex-1">
               {NAV.map((l, i) => (
@@ -135,7 +136,7 @@ export default function Navbar() {
                       fontSize: 36,
                       letterSpacing: '0.08em',
                       display: 'block',
-                      color: pathname === l.href ? '#C9A84C' : 'rgba(255,255,255,0.7)',
+                      color: pathname === l.href ? '#C9A84C' : 'rgba(0,0,0,0.6)',
                     }}
                   >
                     {l.label}
@@ -143,11 +144,11 @@ export default function Navbar() {
                 </motion.div>
               ))}
             </nav>
-            <div className="flex flex-col gap-4" style={{ borderTop: '1px solid #2A2A2A', paddingTop: 32 }}>
+            <div className="flex flex-col gap-4" style={{ borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: 32 }}>
               <a
                 href="tel:+33123456789"
                 className="flex items-center gap-3 no-underline"
-                style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-code, monospace)' }}
+                style={{ fontSize: 14, color: 'rgba(0,0,0,0.35)', fontFamily: 'var(--font-code, monospace)' }}
               >
                 <Phone size={14} />
                 01 23 45 67 89

@@ -63,7 +63,7 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
-              style={{ position: 'absolute', inset: 0, zIndex: 15, background: '#0A0A0A' }}
+              style={{ position: 'absolute', inset: 0, zIndex: 15, background: '#F8F9FA' }}
             />
           )}
         </AnimatePresence>
@@ -79,20 +79,20 @@ export default function HomePage() {
           </p>
           <h1
             className="font-display"
-            style={{ fontSize: 'clamp(56px,9vw,130px)', lineHeight: 0.9, color: 'white', marginBottom: 24 }}
+            style={{ fontSize: 'clamp(56px,9vw,130px)', lineHeight: 0.9, color: '#0F0F0F', marginBottom: 24 }}
           >
             L&apos;EXCELLENCE<br />
             <span className="text-gold">AUTOMOBILE</span><br />
             À PORTÉE DE MAIN
           </h1>
-          <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.45)', maxWidth: 400, marginBottom: 40, lineHeight: 1.7 }}>
+          <p style={{ fontSize: 16, color: 'rgba(0,0,0,0.5)', maxWidth: 400, marginBottom: 40, lineHeight: 1.7 }}>
             Chaque véhicule est sélectionné, inspecté et préparé avec une rigueur absolue.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
             <Link href="/vente" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: '#C9A84C', color: '#000', padding: '16px 32px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 16, letterSpacing: '0.2em', textDecoration: 'none' }}>
               DÉCOUVRIR NOS VÉHICULES <ArrowRight size={16} />
             </Link>
-            <Link href="/reprise" style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', color: 'white', padding: '16px 32px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 16, letterSpacing: '0.2em', textDecoration: 'none' }}>
+            <Link href="/reprise" style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(0,0,0,0.15)', color: '#0F0F0F', padding: '16px 32px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 16, letterSpacing: '0.2em', textDecoration: 'none' }}>
               ESTIMER MA REPRISE
             </Link>
           </div>
@@ -104,9 +104,9 @@ export default function HomePage() {
           style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 25 }}
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-            <ArrowDown size={16} style={{ color: 'rgba(255,255,255,0.3)' }} />
+            <ArrowDown size={16} style={{ color: 'rgba(0,0,0,0.25)' }} />
           </motion.div>
-          <span style={{ fontSize: 10, letterSpacing: '0.4em', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-code,monospace)', textTransform: 'uppercase' }}>Scroll</span>
+          <span style={{ fontSize: 10, letterSpacing: '0.4em', color: 'rgba(0,0,0,0.2)', fontFamily: 'var(--font-code,monospace)', textTransform: 'uppercase' }}>Scroll</span>
         </motion.div>
 
         {/* Stats */}
@@ -121,7 +121,7 @@ export default function HomePage() {
           ].map((s) => (
             <div key={s.label}>
               <p className="font-display" style={{ fontSize: 28, color: '#C9A84C' }}><Counter to={s.value} suffix={s.suffix} /></p>
-              <p style={{ fontSize: 10, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)' }}>{s.label}</p>
+              <p style={{ fontSize: 10, letterSpacing: '0.2em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)' }}>{s.label}</p>
             </div>
           ))}
         </motion.div>
@@ -150,11 +150,11 @@ export default function HomePage() {
       </section>
 
       {/* ── VÉHICULES VEDETTES ── */}
-      <section style={{ padding: '96px 24px', background: '#080808' }}>
+      <section style={{ padding: '96px 24px', background: '#EDEEF2' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ marginBottom: 64 }}>
             <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 12 }}>Sélection du moment</p>
-            <h2 className="font-display" style={{ fontSize: 'clamp(40px,7vw,80px)', color: 'white', lineHeight: 0.95 }}>VÉHICULES<br />VEDETTES</h2>
+            <h2 className="font-display" style={{ fontSize: 'clamp(40px,7vw,80px)', color: '#0F0F0F', lineHeight: 0.95 }}>VÉHICULES<br />VEDETTES</h2>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {featured.map((v, i) => <VehicleCard key={v.slug} vehicle={v} index={i} />)}
@@ -172,29 +172,29 @@ export default function HomePage() {
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ marginBottom: 64 }}>
             <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 12 }}>Transparence totale</motion.p>
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="font-display" style={{ fontSize: 'clamp(40px,7vw,80px)', color: 'white', lineHeight: 0.95 }}>POURQUOI<br />CHOISIR RS STARK</motion.h2>
+            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="font-display" style={{ fontSize: 'clamp(40px,7vw,80px)', color: '#0F0F0F', lineHeight: 0.95 }}>POURQUOI<br />CHOISIR RS STARK</motion.h2>
           </div>
 
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', minWidth: 580, borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid #2A2A2A' }}>
-                  <th style={{ textAlign: 'left', paddingBottom: 16, paddingRight: 24, fontSize: 10, fontFamily: 'var(--font-code,monospace)', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', fontWeight: 400 }}>Critère</th>
+                <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+                  <th style={{ textAlign: 'left', paddingBottom: 16, paddingRight: 24, fontSize: 10, fontFamily: 'var(--font-code,monospace)', letterSpacing: '0.2em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontWeight: 400 }}>Critère</th>
                   <th style={{ paddingBottom: 16, paddingLeft: 24, paddingRight: 24 }}><span className="font-display" style={{ color: '#C9A84C', fontSize: 18, letterSpacing: '0.2em' }}>RS STARK</span></th>
-                  <th style={{ paddingBottom: 16, paddingLeft: 24, paddingRight: 24, fontSize: 10, fontFamily: 'var(--font-code,monospace)', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', fontWeight: 400 }}>LeBonCoin</th>
-                  <th style={{ paddingBottom: 16, paddingLeft: 24, paddingRight: 24, fontSize: 10, fontFamily: 'var(--font-code,monospace)', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', fontWeight: 400 }}>La Centrale</th>
+                  <th style={{ paddingBottom: 16, paddingLeft: 24, paddingRight: 24, fontSize: 10, fontFamily: 'var(--font-code,monospace)', letterSpacing: '0.2em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontWeight: 400 }}>LeBonCoin</th>
+                  <th style={{ paddingBottom: 16, paddingLeft: 24, paddingRight: 24, fontSize: 10, fontFamily: 'var(--font-code,monospace)', letterSpacing: '0.2em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', fontWeight: 400 }}>La Centrale</th>
                 </tr>
               </thead>
               <tbody>
                 {comparisonData.map((row, i) => (
-                  <motion.tr key={row.critere} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} style={{ borderBottom: '1px solid #2A2A2A' }}>
-                    <td style={{ padding: '16px 24px 16px 0', fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>{row.critere}</td>
+                  <motion.tr key={row.critere} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+                    <td style={{ padding: '16px 24px 16px 0', fontSize: 13, color: 'rgba(0,0,0,0.55)' }}>{row.critere}</td>
                     <td style={{ padding: '16px 24px', textAlign: 'center' }}><span style={{ color: '#C9A84C', fontSize: 13 }}>{row.nous}</span></td>
                     <td style={{ padding: '16px 24px', textAlign: 'center' }}>
-                      {row.lbc === false ? <X size={14} style={{ color: 'rgba(239,68,68,0.5)', margin: '0 auto', display: 'block' }} /> : <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>{row.lbc}</span>}
+                      {row.lbc === false ? <X size={14} style={{ color: 'rgba(239,68,68,0.5)', margin: '0 auto', display: 'block' }} /> : <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.35)' }}>{row.lbc}</span>}
                     </td>
                     <td style={{ padding: '16px 24px', textAlign: 'center' }}>
-                      {row.centrale === false ? <X size={14} style={{ color: 'rgba(239,68,68,0.5)', margin: '0 auto', display: 'block' }} /> : <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>{row.centrale}</span>}
+                      {row.centrale === false ? <X size={14} style={{ color: 'rgba(239,68,68,0.5)', margin: '0 auto', display: 'block' }} /> : <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.35)' }}>{row.centrale}</span>}
                     </td>
                   </motion.tr>
                 ))}
@@ -209,7 +209,7 @@ export default function HomePage() {
               { value: 2,   suffix: 'h',     label: 'Réponse reprise'     },
               { value: 6,   suffix: ' mois', label: 'De garantie incluse' },
             ].map((stat, i) => (
-              <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ border: '1px solid #2A2A2A', padding: 24, textAlign: 'center' }}>
+              <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="glass-card" style={{ padding: 24, textAlign: 'center' }}>
                 <p className="font-display" style={{ fontSize: 48, color: '#C9A84C', marginBottom: 8 }}><Counter to={stat.value} suffix={stat.suffix} /></p>
                 <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)' }}>{stat.label}</p>
               </motion.div>
@@ -219,22 +219,22 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA REPRISE ── */}
-      <section style={{ padding: '128px 24px', background: '#080808', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at top left, rgba(201,168,76,0.06), transparent 60%)' }} />
+      <section style={{ padding: '128px 24px', background: '#EDEEF2', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at top left, rgba(201,168,76,0.08), transparent 60%)' }} />
         <div style={{ maxWidth: 896, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}>Reprise express</p>
-            <h2 className="font-display" style={{ fontSize: 'clamp(40px,8vw,96px)', color: 'white', lineHeight: 0.9, marginBottom: 24 }}>
+            <h2 className="font-display" style={{ fontSize: 'clamp(40px,8vw,96px)', color: '#0F0F0F', lineHeight: 0.9, marginBottom: 24 }}>
               ESTIMEZ VOTRE<br />VÉHICULE EN 2H
             </h2>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.4)', maxWidth: 480, margin: '0 auto 48px', lineHeight: 1.7 }}>
+            <p style={{ fontSize: 16, color: 'rgba(0,0,0,0.45)', maxWidth: 480, margin: '0 auto 48px', lineHeight: 1.7 }}>
               Renseignez votre véhicule actuel et recevez une estimation sous 2 heures. Offre ferme garantie 7 jours.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>
               <Link href="/reprise" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: '#C9A84C', color: '#000', padding: '20px 40px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 18, letterSpacing: '0.2em', textDecoration: 'none' }}>
                 ESTIMER MA REPRISE <ArrowRight size={16} />
               </Link>
-              <Link href="/simulateurs" style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.2)', color: 'white', padding: '20px 40px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 18, letterSpacing: '0.2em', textDecoration: 'none' }}>
+              <Link href="/simulateurs" style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(0,0,0,0.15)', color: '#0F0F0F', padding: '20px 40px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 18, letterSpacing: '0.2em', textDecoration: 'none' }}>
                 SIMULER MON PRIX
               </Link>
             </div>

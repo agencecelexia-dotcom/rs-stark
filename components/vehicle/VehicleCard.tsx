@@ -50,10 +50,10 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
     >
       <Link href={`/vehicule/${vehicle.slug}`} style={{ display: 'block', textDecoration: 'none' }}>
         <div
-          className="group transition-all duration-500"
-          style={{ background: '#111', border: '1px solid #2A2A2A', overflow: 'hidden' }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(201,168,76,0.35)' }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = '#2A2A2A' }}
+          className="group glass-card transition-all duration-500"
+          style={{ overflow: 'hidden' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 40px rgba(201,168,76,0.15)' }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 24px rgba(0,0,0,0.06)' }}
         >
           {/* Photo placeholder */}
           <div className="img-ph relative" style={{ aspectRatio: '16/10' }}>
@@ -68,13 +68,13 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
               style={{
                 position: 'absolute', top: 12, right: 12, zIndex: 2,
                 width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.08)',
-                transition: 'border-color 0.2s',
+                background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(0,0,0,0.08)',
+                backdropFilter: 'blur(8px)', transition: 'all 0.2s',
               }}
             >
               <Heart
                 size={13}
-                style={{ color: liked ? '#ef4444' : 'rgba(255,255,255,0.4)', fill: liked ? '#ef4444' : 'none' }}
+                style={{ color: liked ? '#ef4444' : 'rgba(0,0,0,0.35)', fill: liked ? '#ef4444' : 'none' }}
               />
             </button>
 
@@ -97,7 +97,7 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
 
             {/* Marque label centré */}
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span className="font-display" style={{ fontSize: 32, color: 'rgba(255,255,255,0.06)', letterSpacing: '0.3em', userSelect: 'none' }}>
+              <span className="font-display" style={{ fontSize: 32, color: 'rgba(0,0,0,0.05)', letterSpacing: '0.3em', userSelect: 'none' }}>
                 {vehicle.marque.toUpperCase()}
               </span>
             </div>
@@ -107,32 +107,32 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
           <div style={{ padding: '18px 20px 20px' }}>
             <div className="flex justify-between items-start" style={{ marginBottom: 14 }}>
               <div>
-                <p style={{ fontSize: 10, letterSpacing: '0.3em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 4, fontFamily: 'var(--font-code,monospace)' }}>
+                <p style={{ fontSize: 10, letterSpacing: '0.3em', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', marginBottom: 4, fontFamily: 'var(--font-code,monospace)' }}>
                   {vehicle.marque}
                 </p>
-                <h3 className="font-display" style={{ fontSize: 20, color: 'white', lineHeight: 1.1 }}>
+                <h3 className="font-display" style={{ fontSize: 20, color: '#0F0F0F', lineHeight: 1.1 }}>
                   {vehicle.modele}{' '}
-                  <span style={{ fontSize: 15, color: 'rgba(255,255,255,0.4)' }}>{vehicle.version}</span>
+                  <span style={{ fontSize: 15, color: 'rgba(0,0,0,0.35)' }}>{vehicle.version}</span>
                 </h3>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontSize: 16, color: '#C9A84C', fontFamily: 'var(--font-code,monospace)', fontWeight: 500 }}>
                   {fmtPrix(vehicle.prix)}
                 </p>
-                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 2, fontFamily: 'var(--font-code,monospace)' }}>
+                <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.25)', marginTop: 2, fontFamily: 'var(--font-code,monospace)' }}>
                   {vehicle.annee}
                 </p>
               </div>
             </div>
 
             {/* Specs */}
-            <div className="flex items-center gap-5" style={{ paddingTop: 14, borderTop: '1px solid #222' }}>
+            <div className="flex items-center gap-5" style={{ paddingTop: 14, borderTop: '1px solid rgba(0,0,0,0.06)' }}>
               {[
                 { Icon: Gauge, val: fmtKm(vehicle.km) },
                 { Icon: Fuel,  val: vehicle.carburant  },
                 { Icon: Zap,   val: `${vehicle.puissance} ch` },
               ].map(({ Icon, val }) => (
-                <div key={val} className="flex items-center gap-1.5" style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-code,monospace)' }}>
+                <div key={val} className="flex items-center gap-1.5" style={{ fontSize: 11, color: 'rgba(0,0,0,0.35)', fontFamily: 'var(--font-code,monospace)' }}>
                   <Icon size={11} style={{ color: '#C9A84C', flexShrink: 0 }} />
                   {val}
                 </div>
