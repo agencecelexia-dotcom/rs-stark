@@ -41,7 +41,7 @@ export default function VehiclePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', paddingTop: 96, paddingBottom: 96 }}>
+    <div className="page-section" style={{ minHeight: '100vh', paddingTop: 96, paddingBottom: 96 }}>
 
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 24px' }}>

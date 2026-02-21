@@ -48,7 +48,7 @@ export default function HomePage() {
     <div>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      <section className="hero-section" style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
         <video
           ref={videoRef}
           autoPlay muted playsInline
@@ -72,9 +72,10 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: videoEnded ? 1 : 0 }}
           transition={{ duration: 0.9, delay: videoEnded ? 0.5 : 0 }}
+          className="hero-content"
           style={{ position: 'relative', zIndex: 25, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 64px', maxWidth: 1344, margin: '0 auto' }}
         >
-          <p style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}>
+          <p className="hero-tagline" style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}>
             Concession Premium — Paris
           </p>
           <h1
@@ -88,7 +89,7 @@ export default function HomePage() {
           <p style={{ fontSize: 16, color: 'rgba(0,0,0,0.5)', maxWidth: 400, marginBottom: 40, lineHeight: 1.7 }}>
             Chaque véhicule est sélectionné, inspecté et préparé avec une rigueur absolue.
           </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+          <div className="hero-buttons" style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
             <Link href="/vente" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: '#C9A84C', color: '#000', padding: '16px 32px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 16, letterSpacing: '0.2em', textDecoration: 'none' }}>
               DÉCOUVRIR NOS VÉHICULES <ArrowRight size={16} />
             </Link>
@@ -100,6 +101,7 @@ export default function HomePage() {
 
         {/* Scroll */}
         <motion.div
+          className="hero-scroll"
           initial={{ opacity: 0 }} animate={{ opacity: videoEnded ? 1 : 0 }} transition={{ delay: videoEnded ? 1 : 0, duration: 0.8 }}
           style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 25 }}
         >
@@ -111,6 +113,7 @@ export default function HomePage() {
 
         {/* Stats */}
         <motion.div
+          className="hero-stats"
           initial={{ opacity: 0 }} animate={{ opacity: videoEnded ? 1 : 0 }} transition={{ delay: videoEnded ? 0.6 : 0, duration: 0.8 }}
           style={{ position: 'absolute', bottom: 40, right: 64, zIndex: 25, display: 'flex', flexDirection: 'column', gap: 16, textAlign: 'right' }}
         >
@@ -230,7 +233,7 @@ export default function HomePage() {
             <p style={{ fontSize: 16, color: 'rgba(0,0,0,0.45)', maxWidth: 480, margin: '0 auto 48px', lineHeight: 1.7 }}>
               Renseignez votre véhicule actuel et recevez une estimation sous 2 heures. Offre ferme garantie 7 jours.
             </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>
+            <div className="hero-cta-buttons" style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>
               <Link href="/reprise" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: '#C9A84C', color: '#000', padding: '20px 40px', fontFamily: 'var(--font-heading,sans-serif)', fontSize: 18, letterSpacing: '0.2em', textDecoration: 'none' }}>
                 ESTIMER MA REPRISE <ArrowRight size={16} />
               </Link>

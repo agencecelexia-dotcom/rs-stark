@@ -18,7 +18,7 @@ export default function ContactPage() {
           <h1 className="font-display text-6xl md:text-8xl text-[#0F0F0F]">CONTACT</h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           {/* LEFT — Info */}
           <div className="space-y-10">
             {/* Quick CTA */}

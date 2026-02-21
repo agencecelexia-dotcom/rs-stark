@@ -38,7 +38,7 @@ export default function RecherchePage() {
       <div className="max-w-2xl mx-auto px-6">
         <div className="mb-12">
           <p className="text-[#C9A84C] font-mono text-xs tracking-[0.4em] uppercase mb-3">Service sur mesure</p>
-          <h1 className="font-display text-6xl text-white mb-4">RECHERCHE PERSONNALISÉE</h1>
+          <h1 className="font-display text-3xl sm:text-6xl text-white mb-4">RECHERCHE PERSONNALISÉE</h1>
           <p className="text-white/40">Décrivez votre véhicule idéal. Notre équipe se charge de le trouver et vous contacte sous 24h.</p>
         </div>
 
@@ -70,7 +70,7 @@ export default function RecherchePage() {
                   </div>
                   <div>
                     <p className="text-xs font-mono tracking-widest text-white/30 uppercase mb-4">Couleur préférée</p>
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-3">
                       {couleurs.map((c) => (
                         <button key={c.name} onClick={() => setCouleur(c.name)} title={c.name} className={`w-8 h-8 rounded-full border-2 transition-all ${couleur === c.name ? 'border-[#C9A84C] scale-110' : 'border-transparent hover:border-white/30'}`} style={{ backgroundColor: c.hex }} />
                       ))}
