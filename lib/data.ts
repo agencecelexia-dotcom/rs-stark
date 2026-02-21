@@ -82,6 +82,136 @@ export function getVehicleBySlug(slug: string) {
 }
 
 /**
+ * Search alternatives — when filters/search return no or few results,
+ * suggests the closest vehicles from the full catalog using fuzzy matching
+ * and multi-criteria scoring.
+ */
+export function searchAlternatives(
+  query: string,
+  filters: {
+    marque?: string
+    carburant?: string
+    maxPrix?: number
+    maxKm?: number
+  },
+  excludeSlugs: string[] = [],
+  count = 6,
+): VehicleCardData[] {
+  const q = query.toLowerCase().trim()
+  const words = q.split(/\s+/).filter(Boolean)
+
+  const scored = vehicles
+    .filter((v) => !excludeSlugs.includes(v.slug))
+    .map((v) => {
+      let score = 0
+      const haystack = `${v.marque} ${v.modele} ${v.version}`.toLowerCase()
+
+      // ── Text matching (fuzzy) ──
+      if (q) {
+        // Exact substring match
+        if (haystack.includes(q)) {
+          score += 50
+        } else {
+          // Per-word partial matching
+          for (const word of words) {
+            if (word.length < 2) continue
+            if (haystack.includes(word)) {
+              score += 30
+            } else {
+              // Prefix matching (e.g. "lambo" → "lamborghini")
+              const fields = [v.marque.toLowerCase(), v.modele.toLowerCase(), v.version.toLowerCase()]
+              for (const field of fields) {
+                if (field.startsWith(word) || word.startsWith(field)) {
+                  score += 20
+                  break
+                }
+              }
+              // Levenshtein-like: check if word is close to any field
+              for (const field of fields) {
+                if (field.length >= 3 && word.length >= 3) {
+                  const common = countCommonChars(word, field)
+                  if (common / Math.max(word.length, field.length) > 0.5) {
+                    score += 10
+                    break
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // ── Brand affinity ──
+      if (filters.marque && filters.marque !== 'Toutes') {
+        if (v.marque === filters.marque) {
+          score += 25
+        } else {
+          // Same segment (luxury brands together)
+          const luxuryBrands = ['Bentley', 'Rolls-Royce', 'Aston Martin']
+          const supercarBrands = ['Ferrari', 'Lamborghini', 'McLaren', 'Bugatti', 'Koenigsegg']
+          const sportBrands = ['Porsche', 'BMW']
+          const getBrandGroup = (m: string) => {
+            if (luxuryBrands.includes(m)) return 'luxury'
+            if (supercarBrands.includes(m)) return 'supercar'
+            if (sportBrands.includes(m)) return 'sport'
+            return 'other'
+          }
+          if (getBrandGroup(v.marque) === getBrandGroup(filters.marque)) {
+            score += 12
+          }
+        }
+      }
+
+      // ── Price proximity ──
+      if (filters.maxPrix && filters.maxPrix < 1000000 && v.prix) {
+        if (v.prix <= filters.maxPrix) {
+          score += 15
+        } else if (v.prix <= filters.maxPrix * 1.3) {
+          // Slightly over budget — still relevant
+          score += 8
+        }
+      }
+
+      // ── Km proximity ──
+      if (filters.maxKm && filters.maxKm < 200000) {
+        if (v.km <= filters.maxKm) {
+          score += 10
+        } else if (v.km <= filters.maxKm * 1.3) {
+          score += 5
+        }
+      }
+
+      // ── Fuel match ──
+      if (filters.carburant && filters.carburant !== 'Tous' && v.carburant === filters.carburant) {
+        score += 8
+      }
+
+      // ── Boost available vehicles ──
+      if (v.statut === 'vente') score += 5
+
+      return { vehicle: v, score }
+    })
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+
+  return scored.slice(0, count).map((s) => s.vehicle)
+}
+
+/** Count characters in common between two strings (order-independent) */
+function countCommonChars(a: string, b: string): number {
+  const bChars = b.split('')
+  let count = 0
+  for (const ch of a) {
+    const idx = bChars.indexOf(ch)
+    if (idx !== -1) {
+      count++
+      bChars.splice(idx, 1)
+    }
+  }
+  return count
+}
+
+/**
  * Recommendation engine — finds similar vehicles based on:
  * - Same brand (high weight)
  * - Similar power (+/- 25%)

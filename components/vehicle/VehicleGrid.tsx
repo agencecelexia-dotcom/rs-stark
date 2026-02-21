@@ -1,8 +1,9 @@
 'use client'
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, SlidersHorizontal, X, Car } from 'lucide-react'
+import { Search, SlidersHorizontal, X, Car, Sparkles, ArrowRight } from 'lucide-react'
 import VehicleCard, { VehicleCardData } from './VehicleCard'
+import { searchAlternatives } from '@/lib/data'
 
 interface Props { vehicles: VehicleCardData[] }
 
@@ -33,6 +34,20 @@ export default function VehicleGrid({ vehicles }: Props) {
     return r
   }, [vehicles, search, marque, carb, maxPrix, maxKm, sort])
 
+  // Compute alternatives when no exact results or very few
+  const hasActiveSearch = search.length > 0 || marque !== 'Toutes' || carb !== 'Tous' || maxPrix < 1000000 || maxKm < 200000
+  const showAlternatives = hasActiveSearch && results.length <= 2
+
+  const alternatives = useMemo(() => {
+    if (!showAlternatives) return []
+    return searchAlternatives(
+      search,
+      { marque, carburant: carb, maxPrix, maxKm },
+      results.map((v) => v.slug),
+      6,
+    )
+  }, [showAlternatives, search, marque, carb, maxPrix, maxKm, results])
+
   const reset = () => {
     setSearch(''); setMarque('Toutes'); setCarb('Tous')
     setMaxPrix(1000000); setMaxKm(200000); setSort('recent')
@@ -51,7 +66,7 @@ export default function VehicleGrid({ vehicles }: Props) {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Rechercher une marque, un modele..."
+            placeholder="Rechercher une marque, un modèle..."
             className="input-rounded"
             style={{ paddingLeft: 44 }}
           />
@@ -64,10 +79,10 @@ export default function VehicleGrid({ vehicles }: Props) {
           className="input-rounded"
           style={{ width: 'auto', minWidth: 180, color: '#5A6B80', cursor: 'pointer' }}
         >
-          <option value="recent">Plus recents</option>
+          <option value="recent">Plus récents</option>
           <option value="prix-asc">Prix croissant</option>
-          <option value="prix-desc">Prix decroissant</option>
-          <option value="km">Kilometrage</option>
+          <option value="prix-desc">Prix décroissant</option>
+          <option value="km">Kilométrage</option>
         </select>
 
         {/* Filter toggle */}
@@ -158,7 +173,7 @@ export default function VehicleGrid({ vehicles }: Props) {
                   <p className="section-tag" style={{ marginBottom: 12 }}>
                     Prix max{' '}
                     <span style={{ color: '#0C1B33', fontWeight: 600 }}>
-                      {maxPrix >= 1000000 ? 'Illimite' : `${maxPrix.toLocaleString('fr-FR')} EUR`}
+                      {maxPrix >= 1000000 ? 'Illimité' : `${maxPrix.toLocaleString('fr-FR')} €`}
                     </span>
                   </p>
                   <input
@@ -173,7 +188,7 @@ export default function VehicleGrid({ vehicles }: Props) {
                   <p className="section-tag" style={{ marginBottom: 12 }}>
                     Km max{' '}
                     <span style={{ color: '#0C1B33', fontWeight: 600 }}>
-                      {maxKm >= 200000 ? 'Illimite' : `${maxKm.toLocaleString('fr-FR')} km`}
+                      {maxKm >= 200000 ? 'Illimité' : `${maxKm.toLocaleString('fr-FR')} km`}
                     </span>
                   </p>
                   <input
@@ -196,7 +211,7 @@ export default function VehicleGrid({ vehicles }: Props) {
                   onMouseEnter={(e) => { e.currentTarget.style.color = '#0C1B33' }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = '#5A6B80' }}
                 >
-                  <X size={14} /> Reinitialiser les filtres
+                  <X size={14} /> Réinitialiser les filtres
                 </button>
               </div>
             </div>
@@ -206,12 +221,12 @@ export default function VehicleGrid({ vehicles }: Props) {
 
       {/* Results count */}
       <p style={{ fontSize: 13, color: '#5A6B80', marginBottom: 24, fontWeight: 500 }}>
-        {results.length} vehicule{results.length !== 1 ? 's' : ''} trouve{results.length !== 1 ? 's' : ''}
+        {results.length} véhicule{results.length !== 1 ? 's' : ''} trouvé{results.length !== 1 ? 's' : ''}
       </p>
 
-      {/* Grid */}
+      {/* Grid — main results */}
       {results.length === 0 ? (
-        <div className="glass-card" style={{ textAlign: 'center', padding: '80px 24px' }}>
+        <div className="glass-card" style={{ textAlign: 'center', padding: '60px 24px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
             <div style={{
               width: 72, height: 72, borderRadius: '50%',
@@ -222,23 +237,83 @@ export default function VehicleGrid({ vehicles }: Props) {
             </div>
           </div>
           <h3 className="font-display" style={{ fontSize: 22, color: '#0C1B33', marginBottom: 8 }}>
-            Aucun resultat
+            Aucun résultat exact
           </h3>
-          <p style={{ fontSize: 14, color: '#5A6B80', marginBottom: 24, maxWidth: 320, margin: '0 auto 24px' }}>
-            Aucun vehicule ne correspond a vos criteres. Essayez de modifier vos filtres.
+          <p style={{ fontSize: 14, color: '#5A6B80', maxWidth: 400, margin: '0 auto 24px', lineHeight: 1.6 }}>
+            {search
+              ? `Aucun véhicule ne correspond à "${search}" avec vos filtres actuels.`
+              : 'Aucun véhicule ne correspond à vos critères de recherche.'}
           </p>
           <button
             onClick={reset}
-            className="btn-primary"
+            className="btn-secondary"
             style={{ fontSize: 13 }}
           >
-            Reinitialiser les filtres
+            <X size={14} /> Réinitialiser les filtres
           </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map((v, i) => <VehicleCard key={v.slug} vehicle={v} index={i} />)}
         </div>
+      )}
+
+      {/* ── Alternatives section ── */}
+      {showAlternatives && alternatives.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          style={{ marginTop: 48 }}
+        >
+          {/* Divider */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28 }}>
+            <div style={{ flex: 1, height: 1, background: '#E2E5EA' }} />
+            <div className="flex items-center gap-2" style={{ color: '#C9A84C', fontSize: 12, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', flexShrink: 0 }}>
+              <Sparkles size={14} />
+              Alternatives suggérées
+            </div>
+            <div style={{ flex: 1, height: 1, background: '#E2E5EA' }} />
+          </div>
+
+          {/* Context message */}
+          <div
+            className="glass-card"
+            style={{
+              padding: '20px 28px',
+              marginBottom: 24,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 16,
+              borderLeft: '3px solid #C9A84C',
+            }}
+          >
+            <div>
+              <p style={{ fontSize: 15, color: '#0C1B33', fontWeight: 600, marginBottom: 4 }}>
+                {results.length === 0
+                  ? 'Nous avons trouvé des véhicules qui pourraient vous intéresser'
+                  : 'Découvrez aussi ces véhicules similaires'}
+              </p>
+              <p style={{ fontSize: 13, color: '#5A6B80', lineHeight: 1.5 }}>
+                {search
+                  ? `Basé sur votre recherche "${search}" et vos critères, voici les véhicules les plus proches de notre stock.`
+                  : 'Voici des alternatives correspondant au mieux à vos critères de recherche.'}
+              </p>
+            </div>
+            <button
+              onClick={reset}
+              className="btn-secondary flex items-center gap-2"
+              style={{ fontSize: 12, padding: '8px 16px', flexShrink: 0 }}
+            >
+              Voir tout <ArrowRight size={13} />
+            </button>
+          </div>
+
+          {/* Alternatives grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {alternatives.map((v, i) => <VehicleCard key={v.slug} vehicle={v} index={i} />)}
+          </div>
+        </motion.div>
       )}
     </div>
   )
