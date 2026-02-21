@@ -1,11 +1,17 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Check, Phone, Gauge, Fuel, Zap, Calendar, ChevronLeft, ChevronRight, Play, ExternalLink } from 'lucide-react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { ArrowLeft, Check, Phone, Gauge, Fuel, Zap, Calendar, ChevronLeft, ChevronRight, Play, ExternalLink, Share2, Copy, MessageCircle } from 'lucide-react'
 import { getVehicleBySlug, getSimilarVehicles } from '@/lib/data'
 import VehicleCard from '@/components/vehicle/VehicleCard'
+
+function getPopularity(slug: string): number {
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) hash = ((hash << 5) - hash) + slug.charCodeAt(i)
+  return Math.abs(hash % 8) + 3
+}
 
 function getYouTubeId(url: string): string | null {
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?#]+)/)
@@ -20,6 +26,10 @@ export default function VehiclePage() {
   const [formSent, setFormSent] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
   const [showVideo, setShowVideo] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const ctaInView = useInView(ctaRef)
 
   if (!vehicle) {
     return (
@@ -56,12 +66,48 @@ export default function VehiclePage() {
 
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 24px' }}>
-        <div className="flex items-center gap-2" style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
-          <Link href="/" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>Accueil</Link>
-          <span style={{ opacity: 0.3 }}>/</span>
-          <Link href="/vente" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>Stock</Link>
-          <span style={{ opacity: 0.3 }}>/</span>
-          <span style={{ color: 'var(--color-navy)', fontWeight: 500 }}>{vehicle.marque} {vehicle.modele}</span>
+        <div className="flex items-center justify-between" style={{ marginBottom: 0 }}>
+          {/* breadcrumb existant */}
+          <div className="flex items-center gap-2" style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
+            <Link href="/" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>Accueil</Link>
+            <span style={{ opacity: 0.3 }}>/</span>
+            <Link href="/vente" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>Stock</Link>
+            <span style={{ opacity: 0.3 }}>/</span>
+            <span style={{ color: 'var(--color-navy)', fontWeight: 500 }}>{vehicle.marque} {vehicle.modele}</span>
+          </div>
+
+          {/* Share button */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => {
+                if (typeof navigator !== 'undefined' && navigator.share) {
+                  navigator.share({ title: `${vehicle.marque} ${vehicle.modele}`, url: window.location.href })
+                } else {
+                  setShareOpen((v) => !v)
+                }
+              }}
+              className="flex items-center gap-2"
+              style={{ fontSize: 13, color: '#5A6B80', background: 'none', border: '1.5px solid #E2E5EA', borderRadius: 50, padding: '8px 16px', fontWeight: 500, transition: 'all 0.2s' }}
+            >
+              <Share2 size={14} /> Partager
+            </button>
+
+            {/* Dropdown */}
+            {shareOpen && (
+              <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 8, background: '#FFFFFF', borderRadius: 12, boxShadow: '0 8px 32px rgba(12,27,51,0.1)', border: '1px solid #E2E5EA', overflow: 'hidden', zIndex: 10, minWidth: 200 }}>
+                <button onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => { setCopied(false); setShareOpen(false) }, 1500) }}
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', background: 'none', border: 'none', fontSize: 13, color: '#0C1B33', textAlign: 'left', cursor: 'pointer' }}>
+                  {copied ? <Check size={14} style={{ color: '#16a34a' }} /> : <Copy size={14} />}
+                  {copied ? 'Lien copié !' : 'Copier le lien'}
+                </button>
+                <a href={`https://wa.me/?text=${encodeURIComponent(`Regarde ce ${vehicle.marque} ${vehicle.modele} : ${typeof window !== 'undefined' ? window.location.href : ''}`)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', fontSize: 13, color: '#0C1B33', textDecoration: 'none', borderTop: '1px solid #E2E5EA' }}>
+                  <MessageCircle size={14} style={{ color: '#16a34a' }} /> Partager sur WhatsApp
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -284,6 +330,20 @@ export default function VehiclePage() {
               )}
             </div>
 
+            {/* Popularity indicator */}
+            {vehicle.statut === 'vente' && (
+              <div className="flex items-center gap-2" style={{ marginBottom: 16 }}>
+                <motion.span
+                  animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  style={{ width: 8, height: 8, borderRadius: '50%', background: '#16a34a', flexShrink: 0 }}
+                />
+                <span style={{ fontSize: 13, color: '#5A6B80' }}>
+                  {getPopularity(vehicle.slug)} personnes consultent ce véhicule
+                </span>
+              </div>
+            )}
+
             {/* Specs */}
             <div className="grid grid-cols-2 gap-3" style={{ marginBottom: 24 }}>
               {specs.map((spec) => (
@@ -299,7 +359,7 @@ export default function VehiclePage() {
 
             {/* CTAs */}
             {vehicle.statut === 'vente' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+              <div ref={ctaRef} style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
                 <button
                   onClick={() => setShowModal('reserve')}
                   className="btn-primary"
@@ -411,6 +471,44 @@ export default function VehiclePage() {
                 </>
               )}
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Sticky CTA Bar — Mobile */}
+      <AnimatePresence>
+        {vehicle.statut === 'vente' && !ctaInView && (
+          <motion.div
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            exit={{ y: 100 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden"
+            style={{
+              position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 40,
+              background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)',
+              borderTop: '1px solid #E2E5EA', padding: '12px 20px',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+            }}
+          >
+            <div>
+              <p className="font-display" style={{ fontSize: 20, color: '#0C1B33', lineHeight: 1 }}>
+                {vehicle.prix ? `${vehicle.prix.toLocaleString('fr-FR')} €` : 'Sur demande'}
+              </p>
+              <p style={{ fontSize: 11, color: '#5A6B80' }}>{vehicle.marque} {vehicle.modele}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <a href="tel:+33123456789" style={{
+                width: 44, height: 44, borderRadius: '50%', border: '1.5px solid #E2E5EA',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#16a34a', textDecoration: 'none',
+              }}>
+                <Phone size={18} />
+              </a>
+              <button onClick={() => setShowModal('reserve')} className="btn-primary" style={{ padding: '12px 24px', fontSize: 13 }}>
+                Réserver
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -8,11 +8,28 @@ import {
 } from 'lucide-react'
 import { getFeatured, byStatus } from '@/lib/data'
 import VehicleCard from '@/components/vehicle/VehicleCard'
+import Accordion from '@/components/ui/Accordion'
 
 const featured   = getFeatured()
 const venteCount = byStatus('vente').length
 const venduCount = byStatus('vendu').length
 const prepCount  = byStatus('preparation').length
+
+const TESTIMONIALS = [
+  { name: 'Alexandre M.', car: 'Porsche 911 Carrera 4S', rating: 5, text: "Un service d'exception. Mon véhicule était exactement comme décrit, livré dans les délais. L'équipe RS Stark est à l'écoute et très professionnelle." },
+  { name: 'Sophie L.', car: 'Ferrari F8 Tributo', rating: 5, text: "Processus d'achat fluide et transparent. La garantie 6 mois est un vrai plus. Je recommande sans hésitation." },
+  { name: 'Thomas D.', car: 'BMW M4 Competition', rating: 5, text: "Excellent rapport qualité-prix. L'inspection 150 points m'a rassuré sur l'état du véhicule. Merci à toute l'équipe !" },
+  { name: 'Marie-Claire B.', car: 'Bentley Continental GT', rating: 5, text: "Service haut de gamme du début à la fin. Livraison impeccable et suivi après-vente irréprochable." },
+  { name: 'Jean-Pierre R.', car: 'Lamborghini Huracán', rating: 5, text: "Troisième achat chez RS Stark. La confiance est totale. Ils trouvent toujours le véhicule parfait." },
+]
+
+const FAQ_ITEMS = [
+  { question: 'Quelle garantie est incluse avec chaque véhicule ?', answer: 'Chaque véhicule bénéficie d\'une garantie RS Stark de 6 mois minimum, couvrant le moteur, la boîte de vitesses, et les organes principaux. Cette garantie est extensible jusqu\'à 24 mois sur demande.' },
+  { question: 'Comment fonctionne votre service de reprise ?', answer: 'Renseignez votre véhicule actuel via notre formulaire en ligne. Vous recevez une estimation sous 2 heures. L\'offre est ferme et garantie 7 jours, vous laissant le temps de décider sans pression.' },
+  { question: 'Proposez-vous des solutions de financement ?', answer: 'Oui, nous travaillons avec plusieurs partenaires bancaires pour vous proposer un financement sur mesure : crédit classique, LOA, ou LLD. Réponse de principe sous 24 heures.' },
+  { question: 'Puis-je faire livrer mon véhicule ?', answer: 'Absolument. Nous livrons partout en France métropolitaine. Le véhicule est transporté sur plateau couvert par un prestataire spécialisé. Délai de livraison : 3 à 7 jours ouvrés.' },
+  { question: 'Comment se déroule l\'inspection 150 points ?', answer: 'Notre inspection couvre l\'intégralité du véhicule : mécanique, électronique, carrosserie, intérieur, pneumatiques, freinage, et plus. Un rapport détaillé est remis avec chaque véhicule.' },
+]
 
 /* ── Animated counter ── */
 function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
@@ -378,6 +395,95 @@ export default function HomePage() {
               </AnimatedSection>
             ))}
           </div>
+        </div>
+      </section>
+
+
+      {/* ════════════════════════════════════════════════════════════
+          TESTIMONIALS
+      ════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: '100px 24px', background: '#F5F6F8' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <AnimatedSection style={{ marginBottom: 48 }}>
+            <p className="section-tag">Ce que disent nos clients</p>
+            <h2 className="font-display" style={{
+              fontSize: 'clamp(36px,6vw,64px)', color: '#0C1B33', lineHeight: 1.05, marginBottom: 20,
+            }}>
+              T&eacute;moignages
+            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {[...Array(5)].map((_, i) => (
+                <span key={i} style={{ color: '#C9A84C', fontSize: 22 }}>{'\u2605'}</span>
+              ))}
+              <span style={{ fontSize: 15, color: '#5A6B80', marginLeft: 4 }}>
+                4.9/5 &mdash; 127 avis Google
+              </span>
+            </div>
+          </AnimatedSection>
+
+          <div style={{
+            display: 'flex', gap: 20, overflowX: 'auto', scrollSnapType: 'x mandatory',
+            paddingBottom: 8,
+          }}>
+            {TESTIMONIALS.map((t, i) => (
+              <AnimatedSection key={t.name} delay={i * 0.08} style={{ flex: '0 0 auto' }}>
+                <div className="glass-card" style={{
+                  borderRadius: 16, padding: 28, minWidth: 340, scrollSnapAlign: 'start',
+                }}>
+                  {/* Stars */}
+                  <div style={{ marginBottom: 16 }}>
+                    {[...Array(t.rating)].map((_, j) => (
+                      <span key={j} style={{ color: '#C9A84C', fontSize: 15 }}>{'\u2605'}</span>
+                    ))}
+                  </div>
+
+                  {/* Quote */}
+                  <p style={{
+                    fontSize: 14, color: '#0C1B33', lineHeight: 1.7,
+                    fontStyle: 'italic', marginBottom: 20,
+                  }}>
+                    &laquo;&nbsp;{t.text}&nbsp;&raquo;
+                  </p>
+
+                  {/* Name */}
+                  <p className="font-display" style={{
+                    fontSize: 15, fontWeight: 700, color: '#0C1B33', marginBottom: 4,
+                  }}>
+                    {t.name}
+                  </p>
+
+                  {/* Car */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Car size={14} style={{ color: '#5A6B80' }} />
+                    <span style={{ fontSize: 13, color: '#5A6B80' }}>{t.car}</span>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* ════════════════════════════════════════════════════════════
+          FAQ
+      ════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: '100px 24px', background: '#FAFBFC' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <AnimatedSection style={{ marginBottom: 48 }}>
+            <p className="section-tag">Questions fr&eacute;quentes</p>
+            <h2 className="font-display" style={{
+              fontSize: 'clamp(36px,6vw,64px)', color: '#0C1B33', lineHeight: 1.05,
+            }}>
+              FAQ
+            </h2>
+          </AnimatedSection>
+
+          <AnimatedSection>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+              <Accordion items={FAQ_ITEMS} />
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 

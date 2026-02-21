@@ -3,6 +3,8 @@ import { Cormorant_Garamond, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import { FavoritesProvider } from '@/lib/favorites-context'
+import FloatingContact from '@/components/layout/FloatingContact'
 
 const heading = Cormorant_Garamond({
   weight: ['400', '500', '600', '700'],
@@ -32,9 +34,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${heading.variable} ${body.variable} ${code.variable}`}>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <FavoritesProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <FloatingContact />
+        </FavoritesProvider>
       </body>
     </html>
   )

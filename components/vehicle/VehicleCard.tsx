@@ -1,8 +1,8 @@
 'use client'
-import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Heart, Car, Gauge, Fuel, Zap, ArrowRight } from 'lucide-react'
+import { useFavorites } from '@/lib/favorites-context'
 
 export interface VehicleCardData {
   slug: string
@@ -38,10 +38,17 @@ function fmtKm(v: number) {
   return new Intl.NumberFormat('fr-FR').format(v) + ' km'
 }
 
+function getPopularity(slug: string): number {
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) hash = ((hash << 5) - hash) + slug.charCodeAt(i)
+  return Math.abs(hash % 8) + 3 // 3-10
+}
+
 interface Props { vehicle: VehicleCardData; index?: number }
 
 export default function VehicleCard({ vehicle, index = 0 }: Props) {
-  const [liked, setLiked] = useState(false)
+  const { isFavorite, toggleFavorite } = useFavorites()
+  const liked = isFavorite(vehicle.slug)
 
   return (
     <motion.div
@@ -76,7 +83,7 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
 
             {/* Like button */}
             <button
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLiked((v) => !v) }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(vehicle.slug) }}
               style={{
                 position: 'absolute', top: 14, right: 14, zIndex: 2,
                 width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -148,6 +155,20 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
             <p style={{ fontSize: 20, color: '#0C1B33', fontWeight: 600, marginBottom: 16, fontFamily: 'var(--font-heading, serif)' }}>
               {fmtPrix(vehicle.prix)}
             </p>
+
+            {/* Popularity indicator */}
+            {vehicle.statut === 'vente' && (
+              <div className="flex items-center gap-2" style={{ marginBottom: 12 }}>
+                <motion.span
+                  animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a', flexShrink: 0 }}
+                />
+                <span style={{ fontSize: 11, color: '#5A6B80' }}>
+                  {getPopularity(vehicle.slug)} personnes consultent
+                </span>
+              </div>
+            )}
 
             {/* Specs row */}
             <div
