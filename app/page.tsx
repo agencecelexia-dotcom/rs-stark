@@ -86,7 +86,7 @@ export default function HomePage() {
           )}
         </AnimatePresence>
 
-        <motion.div animate={{ opacity: videoEnded ? 0 : 1 }} transition={{ duration: 0.8 }} style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 64px', maxWidth: 1344, margin: '0 auto' }}>
+        <div style={{ position: 'relative', zIndex: 25, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 64px', maxWidth: 1344, margin: '0 auto' }}>
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
             style={{ fontSize: 10, letterSpacing: '0.4em', color: '#C9A84C', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)', marginBottom: 24 }}
@@ -120,12 +120,12 @@ export default function HomePage() {
               ESTIMER MA REPRISE
             </Link>
           </motion.div>
-        </motion.div>
+        </div>
 
         {/* Scroll */}
         <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: videoEnded ? 0 : 1 }} transition={{ delay: videoEnded ? 0 : 2, duration: 0.8 }}
-          style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
+          style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 25 }}
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
             <ArrowDown size={16} style={{ color: 'rgba(255,255,255,0.3)' }} />
@@ -134,7 +134,7 @@ export default function HomePage() {
         </motion.div>
 
         {/* Stats */}
-        <motion.div animate={{ opacity: videoEnded ? 0 : 1 }} transition={{ duration: 0.8 }} style={{ position: 'absolute', bottom: 40, right: 64, display: 'flex', flexDirection: 'column', gap: 16, textAlign: 'right' }}>
+        <div style={{ position: 'absolute', bottom: 40, right: 64, zIndex: 25, display: 'flex', flexDirection: 'column', gap: 16, textAlign: 'right' }}>
           {[
             { label: 'Véhicules en stock',  value: venteCount,       suffix: ''   },
             { label: 'Véhicules vendus',    value: venduCount + 100, suffix: '+'  },
@@ -145,7 +145,7 @@ export default function HomePage() {
               <p style={{ fontSize: 10, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', fontFamily: 'var(--font-code,monospace)' }}>{s.label}</p>
             </div>
           ))}
-        </motion.div>
+        </div>
       </section>
 
       {/* ── CATÉGORIES ── */}
