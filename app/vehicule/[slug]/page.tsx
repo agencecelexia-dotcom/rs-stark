@@ -66,14 +66,14 @@ export default function VehiclePage() {
 
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 24px' }}>
-        <div className="flex items-center justify-between" style={{ marginBottom: 0 }}>
+        <div className="flex flex-wrap items-center justify-between gap-3" style={{ marginBottom: 0 }}>
           {/* breadcrumb existant */}
-          <div className="flex items-center gap-2" style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
-            <Link href="/" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>Accueil</Link>
-            <span style={{ opacity: 0.3 }}>/</span>
-            <Link href="/vente" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>Stock</Link>
-            <span style={{ opacity: 0.3 }}>/</span>
-            <span style={{ color: 'var(--color-navy)', fontWeight: 500 }}>{vehicle.marque} {vehicle.modele}</span>
+          <div className="flex items-center gap-2" style={{ fontSize: 13, color: 'var(--color-text-muted)', minWidth: 0, overflow: 'hidden' }}>
+            <Link href="/" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s', flexShrink: 0 }}>Accueil</Link>
+            <span style={{ opacity: 0.3, flexShrink: 0 }}>/</span>
+            <Link href="/vente" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s', flexShrink: 0 }}>Stock</Link>
+            <span style={{ opacity: 0.3, flexShrink: 0 }}>/</span>
+            <span style={{ color: 'var(--color-navy)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{vehicle.marque} {vehicle.modele}</span>
           </div>
 
           {/* Share button */}

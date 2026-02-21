@@ -72,7 +72,8 @@ function AnimatedSection({ children, className, style, delay = 0 }: {
 
 export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [videoEnded, setVideoEnded] = useState(false)
+  const [videoReady, setVideoReady] = useState(false)
+  const [videoError, setVideoError] = useState(false)
 
   return (
     <div>
@@ -80,33 +81,34 @@ export default function HomePage() {
       {/* ════════════════════════════════════════════════════════════
           HERO SECTION
       ════════════════════════════════════════════════════════════ */}
-      <section className="hero-section" style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-        {/* Video */}
-        <video
-          ref={videoRef}
-          autoPlay muted playsInline
-          onEnded={() => setVideoEnded(true)}
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-          src="/videos/hf_20260221_001748_34f2ff8a-ba4b-46e9-8248-aa648c6fdc3e.mp4"
-        />
+      <section className="hero-section" style={{ position: 'relative', height: '100vh', overflow: 'hidden', background: '#0C1B33' }}>
+        {/* Video — ambient background, not blocking */}
+        {!videoError && (
+          <video
+            ref={videoRef}
+            autoPlay muted playsInline loop
+            onCanPlay={() => setVideoReady(true)}
+            onError={() => setVideoError(true)}
+            style={{
+              position: 'absolute', inset: 0, width: '100%', height: '100%',
+              objectFit: 'cover', opacity: videoReady ? 0.45 : 0,
+              transition: 'opacity 1.2s ease',
+            }}
+            src="/videos/hf_20260221_001748_34f2ff8a-ba4b-46e9-8248-aa648c6fdc3e.mp4"
+          />
+        )}
 
-        {/* Navy overlay after video ends */}
-        <AnimatePresence>
-          {videoEnded && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              style={{ position: 'absolute', inset: 0, zIndex: 15, background: '#0C1B33' }}
-            />
-          )}
-        </AnimatePresence>
+        {/* Dark gradient overlay — ensures text readability */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 5,
+          background: 'linear-gradient(to right, rgba(12,27,51,0.85) 0%, rgba(12,27,51,0.5) 60%, rgba(12,27,51,0.3) 100%)',
+        }} />
 
-        {/* Hero content (text + CTAs) */}
+        {/* Hero content (text + CTAs) — always visible */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: videoEnded ? 1 : 0 }}
-          transition={{ duration: 0.9, delay: videoEnded ? 0.5 : 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="hero-content"
           style={{
             position: 'relative', zIndex: 25, height: '100%',
@@ -172,8 +174,8 @@ export default function HomePage() {
         <motion.div
           className="hero-scroll"
           initial={{ opacity: 0 }}
-          animate={{ opacity: videoEnded ? 1 : 0 }}
-          transition={{ delay: videoEnded ? 1 : 0, duration: 0.8 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
           style={{
             position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 25,
@@ -194,8 +196,8 @@ export default function HomePage() {
         <motion.div
           className="hero-stats"
           initial={{ opacity: 0 }}
-          animate={{ opacity: videoEnded ? 1 : 0 }}
-          transition={{ delay: videoEnded ? 0.6 : 0, duration: 0.8 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
           style={{
             position: 'absolute', bottom: 40, right: 64, zIndex: 25,
             display: 'flex', flexDirection: 'column', gap: 16, textAlign: 'right',
@@ -421,9 +423,9 @@ export default function HomePage() {
             </div>
           </AnimatedSection>
 
-          <div style={{
+          <div className="testimonial-scroll" style={{
             display: 'flex', gap: 20, overflowX: 'auto', scrollSnapType: 'x mandatory',
-            paddingBottom: 8,
+            paddingBottom: 8, WebkitOverflowScrolling: 'touch',
           }}>
             {TESTIMONIALS.map((t, i) => (
               <AnimatedSection key={t.name} delay={i * 0.08} style={{ flex: '0 0 auto' }}>

@@ -27,6 +27,10 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
+  // On homepage with dark hero, navbar uses light colors until scrolled
+  const isHomepage = pathname === '/'
+  const onDarkBg = isHomepage && !scrolled
+
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 40)
   }, [])
@@ -77,7 +81,7 @@ export default function Navbar() {
         className={`
           fixed top-0 inset-x-0 z-50
           transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
-          ${scrolled ? 'glass' : 'bg-transparent'}
+          ${scrolled ? 'glass' : ''}
         `}
         style={{ height: 72 }}
       >
@@ -90,8 +94,10 @@ export default function Navbar() {
               style={{
                 width: 36,
                 height: 36,
-                background: '#0C1B33',
+                background: onDarkBg ? 'rgba(255,255,255,0.15)' : '#0C1B33',
                 borderRadius: 8,
+                border: onDarkBg ? '1px solid rgba(255,255,255,0.2)' : 'none',
+                transition: 'all 0.4s ease',
               }}
             >
               <span
@@ -102,11 +108,11 @@ export default function Navbar() {
               </span>
             </div>
             <span
-              className="font-display hidden sm:inline-block transition-opacity duration-300"
+              className="font-display hidden sm:inline-block transition-all duration-300"
               style={{
                 fontSize: 18,
                 letterSpacing: '0.12em',
-                color: '#0C1B33',
+                color: onDarkBg ? '#FFFFFF' : '#0C1B33',
                 fontWeight: 600,
               }}
             >
@@ -129,7 +135,9 @@ export default function Navbar() {
                   style={{
                     fontSize: 14,
                     fontWeight: 400,
-                    color: isVehiclePage ? '#0C1B33' : '#5A6B80',
+                    color: onDarkBg
+                      ? (isVehiclePage ? '#FFFFFF' : 'rgba(255,255,255,0.7)')
+                      : (isVehiclePage ? '#0C1B33' : '#5A6B80'),
                     letterSpacing: '0.01em',
                   }}
                 >
@@ -139,7 +147,9 @@ export default function Navbar() {
                   size={14}
                   className="transition-transform duration-200"
                   style={{
-                    color: isVehiclePage ? '#0C1B33' : '#5A6B80',
+                    color: onDarkBg
+                      ? (isVehiclePage ? '#FFFFFF' : 'rgba(255,255,255,0.7)')
+                      : (isVehiclePage ? '#0C1B33' : '#5A6B80'),
                     transform: vehicleDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
                   }}
                 />
@@ -221,7 +231,9 @@ export default function Navbar() {
                     style={{
                       fontSize: 14,
                       fontWeight: 400,
-                      color: isActive ? '#0C1B33' : '#5A6B80',
+                      color: onDarkBg
+                        ? (isActive ? '#FFFFFF' : 'rgba(255,255,255,0.7)')
+                        : (isActive ? '#0C1B33' : '#5A6B80'),
                       letterSpacing: '0.01em',
                     }}
                   >
@@ -242,7 +254,14 @@ export default function Navbar() {
 
           {/* ── Desktop CTA ── */}
           <div className="hidden lg:flex items-center">
-            <Link href="/contact" className="btn-primary" style={{ padding: '10px 24px', fontSize: 13 }}>
+            <Link
+              href="/contact"
+              className={onDarkBg ? '' : 'btn-primary'}
+              style={onDarkBg
+                ? { padding: '10px 24px', fontSize: 13, borderRadius: 50, border: '1.5px solid rgba(255,255,255,0.3)', color: '#FFFFFF', background: 'rgba(255,255,255,0.1)', display: 'inline-flex', alignItems: 'center', gap: 8, fontWeight: 500, textDecoration: 'none', transition: 'all 0.3s' }
+                : { padding: '10px 24px', fontSize: 13 }
+              }
+            >
               Nous contacter
               <ArrowRight size={14} />
             </Link>
@@ -253,7 +272,7 @@ export default function Navbar() {
             className="lg:hidden flex items-center justify-center bg-transparent border-0 p-2 rounded-lg transition-colors duration-200"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-            style={{ color: '#0C1B33' }}
+            style={{ color: onDarkBg ? '#FFFFFF' : '#0C1B33', transition: 'color 0.3s' }}
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen ? (

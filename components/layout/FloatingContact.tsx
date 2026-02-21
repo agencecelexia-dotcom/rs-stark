@@ -40,7 +40,7 @@ export default function FloatingContact() {
   if (!visible) return null
 
   return (
-    <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 45 }}>
+    <div className="floating-contact" style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 45 }}>
       <AnimatePresence>
         {open && (
           <motion.div

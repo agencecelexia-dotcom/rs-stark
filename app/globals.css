@@ -254,8 +254,13 @@
   .hero-section {
     height: 100svh !important;
   }
+  .hero-section video {
+    object-position: center center;
+  }
   .hero-content {
     padding: 0 20px !important;
+    justify-content: flex-end !important;
+    padding-bottom: 100px !important;
   }
   .hero-tagline {
     margin-bottom: 16px !important;
@@ -281,7 +286,7 @@
     justify-content: center !important;
     padding: 14px 20px !important;
     font-size: 13px !important;
-    letter-spacing: 0.15em !important;
+    letter-spacing: 0.08em !important;
   }
   .hero-stats {
     display: none !important;
@@ -289,16 +294,15 @@
   .hero-scroll {
     bottom: 16px !important;
   }
-  .hero-cta-section .hero-cta-buttons {
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 10px !important;
+
+  /* ── Sections — reduce padding on mobile ── */
+  section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
-  .hero-cta-section .hero-cta-buttons a {
-    width: 100% !important;
-    justify-content: center !important;
-    padding: 16px 24px !important;
-    font-size: 15px !important;
+  section > div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   /* ── Pages with inline styles (vente, vendu, preparation, vehicule) ── */
@@ -316,5 +320,28 @@
   }
   .vehicle-modal {
     padding: 20px !important;
+  }
+
+  /* ── Testimonials horizontal scroll ── */
+  .testimonial-scroll {
+    gap: 12px !important;
+  }
+  .testimonial-scroll > div {
+    min-width: 280px !important;
+  }
+
+  /* ── Glass card — reduce hover effect on touch ── */
+  .glass-card:hover {
+    transform: none;
+  }
+
+  /* ── Stats grid — smaller text ── */
+  .glass-card p[style*="fontSize: 40"] {
+    font-size: 28px !important;
+  }
+
+  /* ── Floating contact — avoid overlap with sticky CTA ── */
+  .floating-contact {
+    bottom: 80px !important;
   }
 }
