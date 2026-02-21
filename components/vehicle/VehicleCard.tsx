@@ -15,6 +15,8 @@ export interface VehicleCardData {
   prix: number | null
   carburant: string
   puissance: number
+  images: string[]
+  youtubeUrl: string | null
 }
 
 const BADGE_CLASS: Record<string, string> = {
@@ -48,11 +50,24 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay: index * 0.07 }}
     >
-      <Link href={`/vehicule/${vehicle.slug}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-        <div className="group glass-card" style={{ overflow: 'hidden' }}>
+      <Link href={`/vehicule/${vehicle.slug}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit', height: '100%' }}>
+        <div className="group glass-card" style={{ overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column' }}>
 
-          {/* Image placeholder area */}
-          <div className="img-ph" style={{ aspectRatio: '4/3', position: 'relative', borderRadius: '12px 12px 0 0' }}>
+          {/* Image area — first image or placeholder */}
+          <div
+            className={vehicle.images.length > 0 ? undefined : 'img-ph'}
+            style={{
+              aspectRatio: '4/3',
+              position: 'relative',
+              borderRadius: '16px 16px 0 0',
+              overflow: 'hidden',
+              flexShrink: 0,
+              ...(vehicle.images.length > 0
+                ? { backgroundImage: `url(${vehicle.images[0]})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: '#E8EBF0' }
+                : {}
+              ),
+            }}
+          >
 
             {/* Badge statut */}
             <div style={{ position: 'absolute', top: 14, left: 14, zIndex: 2 }}>
@@ -112,7 +127,7 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
           </div>
 
           {/* Content area */}
-          <div style={{ padding: '20px 22px 22px' }}>
+          <div style={{ padding: '20px 22px 22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
             {/* Brand + Model heading */}
             <div style={{ marginBottom: 6 }}>
               <p style={{ fontSize: 11, letterSpacing: '0.15em', color: '#5A6B80', textTransform: 'uppercase', marginBottom: 4, fontWeight: 500 }}>
@@ -137,7 +152,7 @@ export default function VehicleCard({ vehicle, index = 0 }: Props) {
             {/* Specs row */}
             <div
               className="flex items-center gap-4"
-              style={{ paddingTop: 14, borderTop: '1px solid #E2E5EA' }}
+              style={{ paddingTop: 14, borderTop: '1px solid #E2E5EA', marginTop: 'auto' }}
             >
               {[
                 { Icon: Gauge, val: fmtKm(vehicle.km) },
